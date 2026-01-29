@@ -4,126 +4,227 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Comandante | Currículo Interestelar</title>
+
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
     <style>
         .highlight {
-            color: #FFD700; /* amarelo futurista */
+            color: #FFD700;
             font-weight: bold;
         }
     </style>
 </head>
+
 <body class="sci-fi-theme">
     <canvas id="spaceCanvas"></canvas>
-    
+
     <div id="ui-layer">
-        <!-- HUD / Navegação -->
+
+        <!-- HUD -->
         <nav class="hud-nav">
-            <div class="status-bar">STATUS: OPERACIONAL | SETOR: SISTEMA SOLAR | DATA: 2264.1</div>
+            <div class="status-bar">
+                STATUS: OPERACIONAL | SETOR: SISTEMA SOLAR | DATA: 2264.1
+            </div>
         </nav>
 
-        <!-- Hero / Apresentação -->
+        <!-- HERO -->
         <header id="hero">
             <div class="scanner-line"></div>
-            <h1 class="glitch-title" data-text="COMANDANTE DEV">Luiz Seabra de Marco</h1>
-            <p class="subtitle">Engenheiro de Sistemas & Explorador de Tecnologias</p>
-            <div class="scroll-indicator">ROLANDO PARA O HIPERESPAÇO</div>
+            <h1 class="glitch-title" data-text="COMANDANTE DEV">
+                Luiz Seabra de Marco
+            </h1>
+            <p class="subtitle">
+                Desenvolvedor de Sistemas & Explorador de Tecnologia
+            </p>
+            <div class="scroll-indicator">
+                ROLANDO PARA O HIPERESPAÇO
+            </div>
         </header>
 
-        <!-- Sobre -->
+        <!-- SOBRE -->
         <section id="about" class="hud-section">
             <div class="container">
-                <h2 class="section-title"><span class="bracket">[</span> REGISTRO DE BORDO <span class="bracket">]</span></h2>
+                <h2 class="section-title">
+                    <span class="bracket">[</span> REGISTRO DE BORDO <span class="bracket">]</span>
+                </h2>
+
                 <div class="bio-content glass-panel">
-                    <p>Desenvolvedor apaixonado por criar experiências digitais imersivas que desafiam a gravidade da web convencional. Com foco em sistemas escaláveis e interfaces futuristas, busco sempre a fronteira final da tecnologia.</p>
+                    <p>
+                        Desenvolvedor focado em criar sistemas e produtos tecnológicos com impacto real.
+                        Atuo em projetos de software, inteligência artificial e acessibilidade, explorando
+                        soluções escaláveis e bem estruturadas desde cedo.
+                    </p>
                 </div>
             </div>
         </section>
 
-        <!-- Tecnologias -->
+        <!-- TECNOLOGIAS -->
         <section id="technologies" class="hud-section">
             <div class="container">
-                <h2 class="section-title"><span class="bracket">[</span> ARSENAL TECNOLÓGICO <span class="bracket">]</span></h2>
+                <h2 class="section-title">
+                    <span class="bracket">[</span> ARSENAL TECNOLÓGICO <span class="bracket">]</span>
+                </h2>
+
                 <div class="tech-grid">
-                    <div class="tech-item"><span>HTML5/CSS3</span><div class="bar"><div class="fill" style="width: 95%"></div></div></div>
-                    <div class="tech-item"><span>JAVASCRIPT</span><div class="bar"><div class="fill" style="width: 90%"></div></div></div>
-                    <div class="tech-item"><span>REACT</span><div class="bar"><div class="fill" style="width: 85%"></div></div></div>
-                    <div class="tech-item"><span>PYTHON(AI, Flask, Django, Dados,Visão computacional)</span><div class="bar"><div class="fill" style="width: 80%"></div></div></div>
-                    <div class="tech-item"><span>PHP/SQL</span><div class="bar"><div class="fill" style="width: 80%"></div></div></div>
-                    <div class="tech-item"><span>KOTLIN</span><div class="bar"><div class="fill" style="width: 80%"></div></div></div>
-                    <div class="tech-item"><span>C++</span><div class="bar"><div class="fill" style="width: 80%"></div></div></div>
-                    <div class="tech-item"><span>Three.js<span><div class="bar"><div class="fill" style="width: 80%"></div></div></div>
+                    <div class="tech-item">
+                        <span>HTML5 / CSS3</span>
+                        <div class="bar"><div class="fill" style="width:95%"></div></div>
+                    </div>
+
+                    <div class="tech-item">
+                        <span>JavaScript</span>
+                        <div class="bar"><div class="fill" style="width:90%"></div></div>
+                    </div>
+
+                    <div class="tech-item">
+                        <span>React</span>
+                        <div class="bar"><div class="fill" style="width:85%"></div></div>
+                    </div>
+
+                    <div class="tech-item">
+                        <span>Python (IA, Flask, Django, Dados, Visão Computacional)</span>
+                        <div class="bar"><div class="fill" style="width:80%"></div></div>
+                    </div>
+
+                    <div class="tech-item">
+                        <span>PHP / SQL</span>
+                        <div class="bar"><div class="fill" style="width:80%"></div></div>
+                    </div>
+
+                    <div class="tech-item">
+                        <span>Kotlin</span>
+                        <div class="bar"><div class="fill" style="width:80%"></div></div>
+                    </div>
+
+                    <div class="tech-item">
+                        <span>C++</span>
+                        <div class="bar"><div class="fill" style="width:75%"></div></div>
+                    </div>
+
+                    <div class="tech-item">
+                        <span>Three.js</span>
+                        <div class="bar"><div class="fill" style="width:80%"></div></div>
+                    </div>
                 </div>
             </div>
         </section>
 
-        <!-- Conquistas -->
+        <!-- CONQUISTAS -->
         <section id="achievements" class="hud-section">
             <div class="container">
-                <h2 class="section-title"><span class="bracket">[</span> MISSÕES CUMPRIDAS <span class="bracket">]</span></h2>
+                <h2 class="section-title">
+                    <span class="bracket">[</span> SELEÇÕES & RECONHECIMENTOS <span class="bracket">]</span>
+                </h2>
+
                 <div class="achievements-list">
+
                     <div class="achievement-card glass-panel">
-                        <span class="tag"><span class="highlight">HARVARD 2025</span></span>
-                        <h3><span class="highlight">HUVTSP – TECH Summer Program</span></h3>
-                        <p>Bolsa de <span class="highlight">US$ 1.250 (~R$ 6.375)</span>. Programa principal de tecnologia de ponta em <span class="highlight">Harvard</span>.</p>
+                        <span class="tag highlight">Harvard — 2025</span>
+                        <h3>HUVTSP – Tech Summer Program</h3>
+                        <p>
+                            <span class="highlight">Aprovado</span> no programa de verão em tecnologia da
+                            Harvard University, com <span class="highlight">oferta de bolsa de US$ 1.250</span>.
+                        </p>
                     </div>
+
                     <div class="achievement-card glass-panel">
                         <span class="tag">Inspirit AI</span>
-                        <h3>Pesquisa de IA para o bem</h3>
-                        <p>Bolsa de <span class="highlight">US$ 300 (~R$ 1.530)</span>. Foco em projetos de sustentabilidade.</p>
+                        <h3>AI for Social Good</h3>
+                        <p>
+                            <span class="highlight">Selecionado</span> para o programa de projetos em
+                            Inteligência Artificial com foco em impacto social,
+                            com <span class="highlight">bolsa ofertada de US$ 300</span>.
+                        </p>
                     </div>
+
                     <div class="achievement-card glass-panel">
-                        <span class="tag">Georgetown / Rice / Rochester</span>
-                        <h3>Programas Pre-College Online</h3>
-                        <p>Participação em programas avançados de tecnologia e ciência.</p>
+                        <span class="tag">Georgetown · Rice · Rochester</span>
+                        <h3>Pre-College Online</h3>
+                        <p>
+                            <span class="highlight">Aprovado</span> em programas pre-college online
+                            nas áreas de tecnologia e ciência.
+                        </p>
                     </div>
+
                     <div class="achievement-card glass-panel">
-                        <span class="tag">Aprovação LALA</span>
-                        <h3>Reconhecimento Acadêmico</h3>
-                        <p>Selecionado entre diversos candidatos para programa de excelência.</p>
+                        <span class="tag">LALA</span>
+                        <h3>Latin American Leadership Academy</h3>
+                        <p>
+                            <span class="highlight">Selecionado</span> no processo seletivo do programa
+                            de liderança da LALA.
+                        </p>
                     </div>
+
                 </div>
             </div>
         </section>
 
-        <!-- Projetos -->
+        <!-- PROJETOS -->
         <section id="projects" class="hud-section">
             <div class="container">
-                <h2 class="section-title"><span class="bracket">[</span> PROJETOS ESTELARES <span class="bracket">]</span></h2>
+                <h2 class="section-title">
+                    <span class="bracket">[</span> PROJETOS ESTELARES <span class="bracket">]</span>
+                </h2>
+
                 <div class="project-grid">
+
                     <div class="project-card sci-fi-border">
                         <h3>Eco Ação</h3>
-                        <p>Pesquisa de IA em sustentabilidade com apoio financeiro da ONU de <span class="highlight">R$ 50.000</span>.</p>
+                        <p>
+                            Projeto de IA voltado à sustentabilidade,
+                            com <span class="highlight">apoio financeiro da ONU (R$ 50.000)</span>.
+                        </p>
                     </div>
+
                     <div class="project-card sci-fi-border">
                         <h3>Nano-Wait</h3>
-                        <p>Biblioteca de Python com <span class="highlight">10.000 downloads</span>.</p>
+                        <p>
+                            Biblioteca Python open-source com
+                            <span class="highlight">10.000+ downloads</span>.
+                        </p>
                     </div>
+
                     <div class="project-card sci-fi-border">
                         <h3>Nano-Wait Vision</h3>
-                        <p>Versão avançada para visão computacional com <span class="highlight">2.000 downloads</span>.</p>
+                        <p>
+                            Extensão de visão computacional com
+                            <span class="highlight">2.000+ downloads</span>.
+                        </p>
                     </div>
+
                     <div class="project-card sci-fi-border">
-                        <h3>Selenium NanoWait</h3>
-                        <p>Integração com Selenium, <span class="highlight">1.500 downloads</span>.</p>
+                        <h3>Selenium Nano-Wait</h3>
+                        <p>
+                            Integração com Selenium,
+                            <span class="highlight">1.500+ downloads</span>.
+                        </p>
                     </div>
+
                     <div class="project-card sci-fi-border">
                         <h3>AI Critic</h3>
-                        <p>Lançado em menos de 2 semanas com <span class="highlight">3.000 downloads</span>.</p>
+                        <p>
+                            Projeto lançado em menos de 2 semanas,
+                            com <span class="highlight">3.000+ downloads</span>.
+                        </p>
                     </div>
+
                     <div class="project-card sci-fi-border">
                         <h3>Connect Voice</h3>
-                        <p>App de acessibilidade que ajuda pessoas tetraplégicas a se comunicarem gratuitamente. MVP quase pronto.</p>
+                        <p>
+                            Aplicação de acessibilidade para pessoas tetraplégicas.
+                            MVP em fase final.
+                        </p>
                     </div>
+
                 </div>
             </div>
         </section>
+
     </div>
 
-    <!-- Tooltip (para canvas) -->
     <div id="tooltip" class="hidden"></div>
 
-    <!-- Script do Canvas -->
     <script src="script.js"></script>
 </body>
 </html>
