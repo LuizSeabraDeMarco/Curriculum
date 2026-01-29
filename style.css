@@ -1,0 +1,241 @@
+:root {
+    --bg-color: #020205;
+    --text-color: #00f2ff;
+    --accent-color: #00f2ff;
+    --warning-color: #ff9d00;
+    --danger-color: #ff003c;
+    --font-main: 'Share Tech Mono', monospace;
+    --font-title: 'Orbitron', sans-serif;
+    --glass: rgba(0, 242, 255, 0.05);
+    --border-glow: 0 0 10px rgba(0, 242, 255, 0.5);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    cursor: none; /* Esconde o cursor padrão */
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-family: var(--font-main);
+    overflow-x: hidden;
+    line-height: 1.4;
+    text-transform: uppercase;
+}
+
+canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+}
+
+#ui-layer {
+    position: relative;
+    z-index: 1;
+    pointer-events: none;
+}
+
+#ui-layer > * {
+    pointer-events: auto;
+}
+
+.container {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 4rem 2rem;
+}
+
+/* HUD Navigation */
+.hud-nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 10px 20px;
+    background: rgba(0, 0, 0, 0.8);
+    border-bottom: 1px solid var(--accent-color);
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    z-index: 100;
+}
+
+/* Hero Section */
+header {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.glitch-title {
+    font-family: var(--font-title);
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    letter-spacing: 1rem;
+    color: white;
+    text-shadow: var(--border-glow);
+    margin-bottom: 1rem;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: var(--accent-color);
+    letter-spacing: 4px;
+}
+
+/* Sections */
+.hud-section {
+    margin-bottom: 5rem;
+}
+
+.section-title {
+    font-family: var(--font-title);
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: var(--warning-color);
+}
+
+.bracket {
+    color: var(--accent-color);
+}
+
+/* Glass Panels */
+.glass-panel {
+    background: var(--glass);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    padding: 2rem;
+    border-radius: 4px;
+    position: relative;
+}
+
+.glass-panel::before {
+    content: '';
+    position: absolute;
+    top: -1px; left: -1px;
+    width: 20px; height: 20px;
+    border-top: 2px solid var(--accent-color);
+    border-left: 2px solid var(--accent-color);
+}
+
+/* Tech Grid */
+.tech-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.tech-item {
+    margin-bottom: 1rem;
+}
+
+.bar {
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 5px;
+}
+
+.fill {
+    height: 100%;
+    background: var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color);
+}
+
+/* Project Cards */
+.project-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+}
+
+.project-card {
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid rgba(0, 242, 255, 0.3);
+    padding: 2rem;
+    transition: all 0.3s;
+    opacity: 0;
+    transform: translateY(20px);
+}
+
+.project-card.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.project-card:hover {
+    border-color: var(--accent-color);
+    box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.2);
+}
+
+/* Tooltip */
+#tooltip {
+    position: fixed;
+    padding: 12px;
+    background: rgba(0, 10, 20, 0.9);
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    font-family: var(--font-main);
+    pointer-events: none;
+    z-index: 1000;
+    font-size: 0.9rem;
+    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+}
+
+.hidden { opacity: 0; }
+
+/* Cursor Sci-Fi HUD */
+#custom-cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 1px solid var(--accent-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: screen;
+}
+
+#custom-cursor::after {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 4px; height: 4px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px var(--accent-color);
+}
+
+body:active #custom-cursor {
+    width: 30px;
+    height: 30px;
+    background: rgba(0, 242, 255, 0.1);
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    font-size: 0.7rem;
+    letter-spacing: 5px;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.3; }
+    50% { opacity: 1; }
+}
+
+.highlight {
+    color: #FFD700; /* amarelo brilhante que combina com o estilo sci-fi */
+    font-weight: bold;
+}
