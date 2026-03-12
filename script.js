@@ -1212,5 +1212,155 @@ function resize() {
     canvas.height = height;
 }
 
+// ===============================
+// HACKER MODE
+// ===============================
+
+const hackerCanvas = document.getElementById("hackerCanvas");
+const hackerCtx = hackerCanvas.getContext("2d");
+
+let hackerMode = false;
+
+let hackerWidth;
+let hackerHeight;
+
+let columns;
+let rainDrops = [];
+
+const hackerChars =
+"アァカサタナハマヤャラワ0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@!<>/{}";
+
+function initHackerCanvas(){
+
+    hackerWidth = hackerCanvas.width = window.innerWidth;
+    hackerHeight = hackerCanvas.height = window.innerHeight;
+
+    columns = Math.floor(hackerWidth / 16);
+
+    rainDrops = [];
+
+    for(let i=0;i<columns;i++){
+        rainDrops[i] = Math.random()*hackerHeight;
+    }
+
+}
+
+function drawHackerRain(){
+
+    hackerCtx.fillStyle = "rgba(0,0,0,0.08)";
+    hackerCtx.fillRect(0,0,hackerWidth,hackerHeight);
+
+    hackerCtx.fillStyle = "#00ff9c";
+    hackerCtx.font = "14px Share Tech Mono";
+
+    for(let i=0;i<rainDrops.length;i++){
+
+        const text =
+        hackerChars[Math.floor(Math.random()*hackerChars.length)];
+
+        hackerCtx.fillText(
+            text,
+            i*16,
+            rainDrops[i]*16
+        );
+
+        if(rainDrops[i]*16 > hackerHeight && Math.random() > 0.975){
+
+            rainDrops[i] = 0;
+
+        }
+
+        rainDrops[i]++;
+
+    }
+
+}
+
+function hackerLoop(){
+
+    if(hackerMode){
+
+        drawHackerRain();
+
+    }
+
+    requestAnimationFrame(hackerLoop);
+
+}
+
+hackerLoop();
+
+initHackerCanvas();
+
+window.addEventListener("resize",initHackerCanvas);
+
+
+// ===============================
+// HACKER TERMINAL LOGS
+// ===============================
+
+const consoleBody =
+document.querySelector(".console-body");
+
+const hackerLogs = [
+
+"Initializing neural interface...",
+"Bypassing orbital firewall...",
+"Decrypting NASA telemetry...",
+"Injecting quantum payload...",
+"Accessing satellite grid...",
+"Rewriting planetary database...",
+"Connecting to deep space relay...",
+"Root privileges granted...",
+"Cosmic kernel loaded...",
+"Interstellar protocol activated..."
+
+];
+
+function pushLog(){
+
+    if(!hackerMode) return;
+
+    const log =
+    hackerLogs[Math.floor(Math.random()*hackerLogs.length)];
+
+    const line =
+    document.createElement("div");
+
+    line.textContent = "> "+log;
+
+    consoleBody.appendChild(line);
+
+    if(consoleBody.children.length > 10){
+
+        consoleBody.removeChild(consoleBody.firstChild);
+
+    }
+
+}
+
+setInterval(pushLog,1200);
+
+
+// ===============================
+// TOGGLE HACKER MODE
+// ===============================
+
+document.addEventListener("keydown",(e)=>{
+
+    if(e.key.toLowerCase() === "h"){
+
+        hackerMode = !hackerMode;
+
+        document.body.classList.toggle("hacker-mode");
+
+        document
+        .getElementById("hacker-console")
+        .classList.toggle("hidden");
+
+    }
+
+});
+
 // ============ INICIALIZA ============
 init();

@@ -283,3 +283,72 @@ body:active #custom-cursor {
         padding: 2rem 1.5rem;
     }
 }
+
+/* ================= HACKER MODE ================= */
+
+#hackerCanvas{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:2;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity 0.4s;
+}
+
+body.hacker-mode{
+    --accent-color:#00ff9c;
+    --text-color:#00ff9c;
+}
+
+body.hacker-mode #hackerCanvas{
+    opacity:1;
+}
+
+body.hacker-mode .glass-panel{
+    border-color:#00ff9c;
+}
+
+body.hacker-mode .glitch-title{
+    animation: hackerGlitch 0.2s infinite;
+}
+
+@keyframes hackerGlitch{
+    0%{transform:translate(0)}
+    20%{transform:translate(-2px,2px)}
+    40%{transform:translate(2px,-2px)}
+    60%{transform:translate(-1px,1px)}
+    80%{transform:translate(1px,-1px)}
+    100%{transform:translate(0)}
+}
+
+/* console */
+
+#hacker-console{
+    position:fixed;
+    bottom:30px;
+    left:30px;
+    width:420px;
+    background:rgba(0,0,0,0.9);
+    border:1px solid #00ff9c;
+    font-family: 'Share Tech Mono', monospace;
+    font-size:12px;
+    z-index:10;
+    box-shadow:0 0 20px rgba(0,255,156,0.5);
+}
+
+.console-header{
+    padding:8px;
+    border-bottom:1px solid #00ff9c;
+    background:black;
+    color:#00ff9c;
+}
+
+.console-body{
+    padding:10px;
+    max-height:200px;
+    overflow:hidden;
+    line-height:1.4;
+}
