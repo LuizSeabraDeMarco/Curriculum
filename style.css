@@ -1,20 +1,20 @@
 :root {
-    --bg-color: #020205;
+    --bg-color: #010103; /* Preto mais profundo para realçar o brilho */
     --text-color: #00f2ff;
     --accent-color: #00f2ff;
     --warning-color: #ff9d00;
     --danger-color: #ff003c;
     --font-main: 'Share Tech Mono', monospace;
     --font-title: 'Orbitron', sans-serif;
-    --glass: rgba(0, 242, 255, 0.05);
-    --border-glow: 0 0 10px rgba(0, 242, 255, 0.5);
+    --glass: rgba(0, 242, 255, 0.03);
+    --border-glow: 0 0 15px rgba(0, 242, 255, 0.6);
 }
 
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    cursor: none; /* Esconde o cursor padrão */
+    cursor: none;
 }
 
 body {
@@ -24,6 +24,7 @@ body {
     overflow-x: hidden;
     line-height: 1.4;
     text-transform: uppercase;
+    -webkit-font-smoothing: antialiased;
 }
 
 canvas {
@@ -33,6 +34,7 @@ canvas {
     width: 100%;
     height: 100%;
     z-index: 0;
+    image-rendering: optimizeSpeed;
 }
 
 #ui-layer {
@@ -51,20 +53,20 @@ canvas {
     padding: 4rem 2rem;
 }
 
-/* HUD Navigation */
 .hud-nav {
     position: fixed;
     top: 0;
     width: 100%;
-    padding: 10px 20px;
-    background: rgba(0, 0, 0, 0.8);
+    padding: 12px 25px;
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
     border-bottom: 1px solid var(--accent-color);
     font-size: 0.8rem;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     z-index: 100;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.5);
 }
 
-/* Hero Section */
 header {
     height: 100vh;
     display: flex;
@@ -78,90 +80,103 @@ header {
 .glitch-title {
     font-family: var(--font-title);
     font-size: clamp(2.5rem, 8vw, 5rem);
-    letter-spacing: 1rem;
+    letter-spacing: 1.2rem;
     color: white;
     text-shadow: var(--border-glow);
     margin-bottom: 1rem;
+    animation: titleGlow 3s infinite alternate;
+}
+
+@keyframes titleGlow {
+    from { text-shadow: 0 0 10px rgba(0, 242, 255, 0.5); }
+    to { text-shadow: 0 0 25px rgba(0, 242, 255, 0.8), 0 0 40px rgba(0, 242, 255, 0.4); }
 }
 
 .subtitle {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     color: var(--accent-color);
-    letter-spacing: 4px;
+    letter-spacing: 5px;
+    opacity: 0.9;
 }
 
-/* Sections */
 .hud-section {
-    margin-bottom: 5rem;
+    margin-bottom: 6rem;
 }
 
 .section-title {
     font-family: var(--font-title);
-    font-size: 1.8rem;
-    margin-bottom: 2rem;
+    font-size: 2rem;
+    margin-bottom: 2.5rem;
     color: var(--warning-color);
+    letter-spacing: 4px;
 }
 
 .bracket {
     color: var(--accent-color);
 }
 
-/* Glass Panels */
 .glass-panel {
     background: var(--glass);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(0, 242, 255, 0.2);
-    padding: 2rem;
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(0, 242, 255, 0.15);
+    padding: 2.5rem;
     border-radius: 4px;
     position: relative;
+    transition: border 0.3s;
+}
+
+.glass-panel:hover {
+    border-color: rgba(0, 242, 255, 0.4);
 }
 
 .glass-panel::before {
     content: '';
     position: absolute;
-    top: -1px; left: -1px;
-    width: 20px; height: 20px;
+    top: -1px;
+    left: -1px;
+    width: 25px;
+    height: 25px;
     border-top: 2px solid var(--accent-color);
     border-left: 2px solid var(--accent-color);
 }
 
-/* Tech Grid */
 .tech-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
 }
 
 .tech-item {
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
 }
 
 .bar {
-    height: 4px;
-    background: rgba(255, 255, 255, 0.1);
-    margin-top: 5px;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.05);
+    margin-top: 8px;
+    border-radius: 3px;
+    overflow: hidden;
 }
 
 .fill {
     height: 100%;
-    background: var(--accent-color);
-    box-shadow: 0 0 10px var(--accent-color);
+    background: linear-gradient(90deg, var(--accent-color), #fff);
+    box-shadow: 0 0 15px var(--accent-color);
 }
 
-/* Project Cards */
 .project-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2.5rem;
 }
 
 .project-card {
-    background: rgba(0, 0, 0, 0.6);
-    border: 1px solid rgba(0, 242, 255, 0.3);
-    padding: 2rem;
-    transition: all 0.3s;
+    background: rgba(0, 0, 0, 0.7);
+    border: 1px solid rgba(0, 242, 255, 0.2);
+    padding: 2.5rem;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
 }
 
 .project-card.visible {
@@ -171,31 +186,33 @@ header {
 
 .project-card:hover {
     border-color: var(--accent-color);
-    box-shadow: inset 0 0 20px rgba(0, 242, 255, 0.2);
+    box-shadow: inset 0 0 30px rgba(0, 242, 255, 0.15), 0 10px 30px rgba(0, 0, 0, 0.5);
+    transform: scale(1.02);
 }
 
-/* Tooltip */
 #tooltip {
     position: fixed;
-    padding: 12px;
-    background: rgba(0, 10, 20, 0.9);
+    padding: 15px;
+    background: rgba(0, 5, 10, 0.95);
     border: 1px solid var(--accent-color);
     color: var(--accent-color);
     font-family: var(--font-main);
     pointer-events: none;
     z-index: 1000;
-    font-size: 0.9rem;
-    box-shadow: 0 0 15px rgba(0, 242, 255, 0.3);
+    font-size: 1rem;
+    box-shadow: 0 0 20px rgba(0, 242, 255, 0.4);
+    border-radius: 2px;
 }
 
-.hidden { opacity: 0; }
+.hidden {
+    opacity: 0;
+}
 
-/* Cursor Sci-Fi HUD */
 #custom-cursor {
     position: fixed;
-    width: 20px;
-    height: 20px;
-    border: 1px solid var(--accent-color);
+    width: 24px;
+    height: 24px;
+    border: 1.5px solid var(--accent-color);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
@@ -207,35 +224,62 @@ header {
 #custom-cursor::after {
     content: '';
     position: absolute;
-    top: 50%; left: 50%;
-    width: 4px; height: 4px;
+    top: 50%;
+    left: 50%;
+    width: 6px;
+    height: 6px;
     background: var(--accent-color);
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    box-shadow: 0 0 10px var(--accent-color);
+    box-shadow: 0 0 12px var(--accent-color);
 }
 
 body:active #custom-cursor {
-    width: 30px;
-    height: 30px;
-    background: rgba(0, 242, 255, 0.1);
+    width: 35px;
+    height: 35px;
+    background: rgba(0, 242, 255, 0.15);
 }
 
-/* Scroll Indicator */
 .scroll-indicator {
     position: absolute;
-    bottom: 30px;
-    font-size: 0.7rem;
-    letter-spacing: 5px;
-    animation: pulse 2s infinite;
+    bottom: 40px;
+    font-size: 0.8rem;
+    letter-spacing: 6px;
+    animation: pulse 2.5s infinite;
+    color: var(--accent-color);
 }
 
 @keyframes pulse {
-    0%, 100% { opacity: 0.3; }
-    50% { opacity: 1; }
+    0%, 100% { opacity: 0.2; transform: translateY(0); }
+    50% { opacity: 1; transform: translateY(-10px); }
 }
 
 .highlight {
-    color: #FFD700; /* amarelo brilhante que combina com o estilo sci-fi */
+    color: #FFD700;
     font-weight: bold;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+    .glitch-title {
+        font-size: 2.2rem;
+        letter-spacing: 0.5rem;
+    }
+
+    .subtitle {
+        font-size: 1rem;
+        letter-spacing: 3px;
+    }
+
+    .tech-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .project-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .container {
+        padding: 2rem 1.5rem;
+    }
 }
