@@ -1,125 +1,330 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Comandante | Currículo Interestelar</title>
-    <link rel="stylesheet" href="style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <title>Luiz Seabra de Marco | Professional Resume</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #000000;
+            --secondary: #424245;
+            --accent: #0071e3;
+            --bg: #ffffff;
+            --border: #d2d2d7;
+            --text-main: #1d1d1f;
+            --text-muted: #86868b;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 32px;
+            --max-width: 850px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f5f5f7;
+            color: var(--text-main);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
+            padding: 40px 20px;
+        }
+
+        .resume-container {
+            max-width: var(--max-width);
+            margin: 0 auto;
+            background: var(--bg);
+            padding: 60px 80px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+            border-radius: 12px;
+        }
+
+        header {
+            border-bottom: 1px solid var(--border);
+            padding-bottom: var(--spacing-lg);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        h1 {
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+
+        section {
+            margin-bottom: var(--spacing-lg);
+        }
+
+        h2 {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--accent);
+            margin-bottom: 16px;
+            border-bottom: 1px solid #f2f2f2;
+            padding-bottom: 4px;
+        }
+
+        .summary {
+            font-size: 16px;
+            color: var(--secondary);
+        }
+
+        .experience-item, .project-item {
+            margin-bottom: 24px;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 4px;
+        }
+
+        .item-title {
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .item-date {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .item-org {
+            font-size: 15px;
+            color: var(--secondary);
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        li {
+            position: relative;
+            padding-left: 18px;
+            margin-bottom: 6px;
+            font-size: 15px;
+            color: var(--secondary);
+        }
+
+        li::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--border);
+        }
+
+        .highlight {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .skill-category {
+            font-size: 15px;
+        }
+
+        .skill-label {
+            font-weight: 600;
+            color: var(--text-main);
+        }
+
+        @media print {
+            body {
+                background: none;
+                padding: 0;
+            }
+            .resume-container {
+                box-shadow: none;
+                padding: 0;
+                width: 100%;
+                max-width: 100%;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .resume-container {
+                padding: 30px 20px;
+            }
+            .item-header {
+                flex-direction: column;
+            }
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .export-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0,113,227,0.3);
+            transition: transform 0.2s;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
+<body>
+    <button class="export-btn no-print" onclick="window.print()">Export PDF</button>
 
-<body class="sci-fi-theme">
-    <canvas id="spaceCanvas"></canvas>
-
-    <div id="ui-layer">
-        <nav class="hud-nav">
-            <div class="status-bar">
-                STATUS: OPERACIONAL | SETOR: SISTEMA SOLAR | DATA: 2264.1
-            </div>
-        </nav>
-
-        <header id="hero">
-            <div class="scanner-line"></div>
-            <h1 class="glitch-title" data-text="COMANDANTE DEV">
-                Luiz Seabra de Marco
-            </h1>
-            <p class="subtitle">
-                Desenvolvedor de Sistemas & Explorador de Tecnologia
-            </p>
-            <div class="scroll-indicator">
-                ROLANDO PARA O HIPERESPAÇO
+    <div class="resume-container">
+        <header>
+            <h1>Luiz Seabra de Marco</h1>
+            <div class="subtitle">Systems Developer & AI Specialist</div>
+            <div class="contact-info">
+                <span>Rio de Janeiro, Brazil</span>
+                <span>•</span>
+                <span><a href="https://www.linkedin.com/in/luizfilipeseabra/" target="_blank">linkedin.com/in/luizfilipeseabra</a></span>
+                <span>•</span>
+                <span><a href="https://github.com/LuizSeabraDeMarco" target="_blank">github.com/LuizSeabraDeMarco</a></span>
             </div>
         </header>
 
-        <section id="about" class="hud-section">
-            <div class="container">
-                <h2 class="section-title">
-                    <span class="bracket">[</span> REGISTRO DE BORDO <span class="bracket">]</span>
-                </h2>
-                <div class="bio-content glass-panel">
-                    <p>
-                        Desenvolvedor focado em criar sistemas e produtos tecnológicos com impacto real.
-                        Atuo em projetos de software, inteligência artificial e acessibilidade, explorando
-                        soluções escaláveis e bem estruturadas desde cedo.
-                    </p>
+        <section>
+            <h2>Professional Summary</h2>
+            <p class="summary">
+                Developer focused on creating systems and technology products with real-world impact. Specialist in <span class="highlight">Artificial Intelligence, Computer Vision, and Automation</span>, with a proven track record of developing widely used open-source libraries and leading internationally recognized sustainable projects.
+            </p>
+        </section>
+
+        <section>
+            <h2>Experience & Impact Projects</h2>
+            
+            <div class="project-item">
+                <div class="item-header">
+                    <span class="item-title">CycloCred — Carbon Credit Automation</span>
+                    <span class="item-date">Feb 2026 — Present</span>
                 </div>
+                <div class="item-org">Technical Leadership / Startup</div>
+                <ul>
+                    <li>Developed platform using <span class="highlight">AI to automate Carbon Credit documentation</span>.</li>
+                    <li>Projected <span class="highlight">R$ 10,000 in value</span> generated in the first 5 months of operation.</li>
+                </ul>
+            </div>
+
+            <div class="project-item">
+                <div class="item-header">
+                    <span class="item-title">Eco Ação (UN Support)</span>
+                    <span class="item-date">Jun 2025 — Dec 2025</span>
+                </div>
+                <div class="item-org">AI Developer</div>
+                <ul>
+                    <li>Sustainability-focused AI project selected for <span class="highlight">UN financial support (US$ 50,000)</span>.</li>
+                    <li>Implemented predictive models for environmental impact and resource management.</li>
+                </ul>
+            </div>
+
+            <div class="project-item">
+                <div class="item-header">
+                    <span class="item-title">Nano-Wait Ecosystem (Open Source)</span>
+                    <span class="item-date">Aug 2024 — Present</span>
+                </div>
+                <div class="item-org">Author & Maintainer</div>
+                <ul>
+                    <li><span class="highlight">Nano-Wait:</span> Python library with <span class="highlight">14,000+ downloads</span> across 60+ countries.</li>
+                    <li><span class="highlight">Nano-Wait Vision:</span> Computer vision extension with <span class="highlight">3,000+ downloads</span>.</li>
+                    <li><span class="highlight">AI Critic:</span> Analysis tool released in 2 weeks with <span class="highlight">7,000+ downloads</span>.</li>
+                </ul>
             </div>
         </section>
 
-        <section id="technologies" class="hud-section">
-            <div class="container">
-                <h2 class="section-title">
-                    <span class="bracket">[</span> ARSENAL TECNOLÓGICO <span class="bracket">]</span>
-                </h2>
-                <div class="tech-grid">
-                    <div class="tech-item"><span>HTML5 / CSS3</span><div class="bar"><div class="fill" style="width:95%"></div></div></div>
-                    <div class="tech-item"><span>JavaScript</span><div class="bar"><div class="fill" style="width:90%"></div></div></div>
-                    <div class="tech-item"><span>React</span><div class="bar"><div class="fill" style="width:85%"></div></div></div>
-                    <div class="tech-item"><span>Python (IA, Flask, Django, Dados, Visão Computacional)</span><div class="bar"><div class="fill" style="width:80%"></div></div></div>
-                    <div class="tech-item"><span>PHP / SQL</span><div class="bar"><div class="fill" style="width:80%"></div></div></div>
-                    <div class="tech-item"><span>Kotlin</span><div class="bar"><div class="fill" style="width:80%"></div></div></div>
-                    <div class="tech-item"><span>C++</span><div class="bar"><div class="fill" style="width:75%"></div></div></div>
-                    <div class="tech-item"><span>Three.js</span><div class="bar"><div class="fill" style="width:80%"></div></div></div>
+        <section>
+            <h2>Awards & Selections</h2>
+            
+            <div class="experience-item">
+                <div class="item-header">
+                    <span class="item-title">Harvard University — HUVTSP Tech Summer Program</span>
+                    <span class="item-date">2025</span>
                 </div>
+                <ul>
+                    <li>Accepted into the summer tech program with a <span class="highlight">US$ 1,250 merit scholarship</span>.</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <div class="item-header">
+                    <span class="item-title">Inspirit AI — AI for Social Good</span>
+                    <span class="item-date">2025</span>
+                </div>
+                <ul>
+                    <li>Selected for social impact AI projects with a <span class="highlight">US$ 300 scholarship</span>.</li>
+                </ul>
+            </div>
+
+            <div class="experience-item">
+                <div class="item-header">
+                    <span class="item-title">Latin American Leadership Academy (LALA)</span>
+                    <span class="item-date">2024</span>
+                </div>
+                <ul>
+                    <li>Selected for high-impact leadership ecosystem in Latin America.</li>
+                </ul>
             </div>
         </section>
 
-        <section id="achievements" class="hud-section">
-            <div class="container">
-                <h2 class="section-title">
-                    <span class="bracket">[</span> SELEÇÕES & RECONHECIMENTOS <span class="bracket">]</span>
-                </h2>
-                <div class="achievements-list">
-                    <div class="achievement-card glass-panel">
-                        <span class="tag highlight">Harvard — 2025</span>
-                        <h3>HUVTSP – Tech Summer Program</h3>
-                        <p><span class="highlight">Aprovado</span> no programa de verão em tecnologia da Harvard University, com <span class="highlight">oferta de bolsa de US$ 1.250</span>.</p>
-                    </div>
-                    <div class="achievement-card glass-panel">
-                        <span class="tag">Inspirit AI</span>
-                        <h3>AI for Social Good</h3>
-                        <p><span class="highlight">Selecionado</span> para o programa de projetos em Inteligência Artificial com foco em impacto social, com <span class="highlight">bolsa ofertada de US$ 300</span>.</p>
-                    </div>
-                    <div class="achievement-card glass-panel">
-                        <span class="tag">Georgetown · Rice · Rochester</span>
-                        <h3>Pre-College Online</h3>
-                        <p><span class="highlight">Aprovado</span> em programas pre-college online nas áreas de tecnologia e ciência.</p>
-                    </div>
-                    <div class="achievement-card glass-panel">
-                        <span class="tag">LALA</span>
-                        <h3>Latin American Leadership Academy</h3>
-                        <p><span class="highlight">Selecionado</span> no processo seletivo do programa de liderança da LALA.</p>
-                    </div>
+        <section>
+            <h2>Tech Arsenal</h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <span class="skill-label">Languages:</span> Python (Expert), JavaScript, Kotlin, C++, PHP, SQL.
                 </div>
-            </div>
-        </section>
-
-        <section id="projects" class="hud-section">
-            <div class="container">
-                <h2 class="section-title">
-                    <span class="bracket">[</span> PROJETOS ESTELARES <span class="bracket">]</span>
-                </h2>
-                <div class="project-grid">
-                    <div class="project-card sci-fi-border"><h3>CycloCred</h3><p>Plataforma, utilizando <span class="highlight">IA para automatizar documentação de Crédito de Carbono</span>. Projeto inicial de startup, com plano de carreira que pode levar a contratação, gerando <span class="highlight">R$ 10.000 em valor em 4–5 meses</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>Eco Ação</h3><p>Projeto de IA voltado à sustentabilidade, com <span class="highlight">apoio financeiro da ONU (US$ 50.000)</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>Nano-Wait</h3><p>Biblioteca Python open-source com <span class="highlight">14.000+ downloads em mais de 60 países</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>Nano-Wait Vision</h3><p>Extensão de visão computacional com <span class="highlight">2.500+ downloads</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>Selenium Nano-Wait</h3><p>Integração com Selenium, <span class="highlight">1.500+ downloads</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>AI Critic</h3><p>Projeto lançado em menos de 2 semanas, com <span class="highlight">6.000+ downloads</span>.</p></div>
+                <div class="skill-category">
+                    <span class="skill-label">Frameworks/Tools:</span> React, Flask, Django, Three.js, Selenium.
+                </div>
+                <div class="skill-category">
+                    <span class="skill-label">Specialties:</span> Computer Vision, Generative AI, Automation, Accessibility.
+                </div>
+                <div class="skill-category">
+                    <span class="skill-label">Languages Spoken:</span> Portuguese (Native), English (Advanced/Academic).
                 </div>
             </div>
         </section>
     </div>
-
-    <div id="tooltip" class="hidden"></div>
-    <canvas id="hackerCanvas"></canvas>
-
-    <div id="hacker-console" class="hidden">
-        <div class="console-header">
-            ROOT ACCESS — CYBERNETIC INTERFACE
-        </div>
-        <div class="console-body"></div>
-    </div>
-    <script src="script.js"></script>
 </body>
 </html>
