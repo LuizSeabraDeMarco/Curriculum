@@ -1,328 +1,284 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luiz Seabra de Marco | Professional Resume</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary: #000000;
-            --secondary: #424245;
-            --accent: #0071e3;
-            --bg: #ffffff;
-            --border: #d2d2d7;
-            --text-main: #1d1d1f;
-            --text-muted: #86868b;
-            --spacing-sm: 8px;
-            --spacing-md: 16px;
-            --spacing-lg: 32px;
-            --max-width: 850px;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Luiz Seabra | AI Engineer</title>
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: #f5f5f7;
-            color: var(--text-main);
-            line-height: 1.5;
-            -webkit-font-smoothing: antialiased;
-            padding: 40px 20px;
-        }
+<style>
+:root {
+    --accent:#0071e3;
+    --bg:#f5f5f7;
+    --card:#ffffff;
+    --text-main:#1d1d1f;
+    --text-muted:#6e6e73;
+}
 
-        .resume-container {
-            max-width: var(--max-width);
-            margin: 0 auto;
-            background: var(--bg);
-            padding: 60px 80px;
-            box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-            border-radius: 12px;
-        }
+* { margin:0; padding:0; box-sizing:border-box; }
 
-        header {
-            border-bottom: 1px solid var(--border);
-            padding-bottom: var(--spacing-lg);
-            margin-bottom: var(--spacing-lg);
-        }
+body {
+    font-family:'Inter', sans-serif;
+    background:var(--bg);
+    padding:40px 20px;
+}
 
-        h1 {
-            font-size: 32px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            margin-bottom: 4px;
-        }
+/* HEADER */
+.header {
+    max-width:1000px;
+    margin:auto;
+    margin-bottom:30px;
+}
 
-        .subtitle {
-            font-size: 18px;
-            color: var(--secondary);
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
+h1 { font-size:36px; }
 
-        .contact-info {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 16px;
-            font-size: 14px;
-            color: var(--text-muted);
-        }
+.subtitle {
+    font-size:18px;
+    color:var(--text-muted);
+    margin-top:6px;
+}
 
-        section {
-            margin-bottom: var(--spacing-lg);
-        }
+.contact {
+    margin-top:10px;
+    font-size:14px;
+    color:var(--text-muted);
+}
 
-        h2 {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--accent);
-            margin-bottom: 16px;
-            border-bottom: 1px solid #f2f2f2;
-            padding-bottom: 4px;
-        }
+/* BUTTONS */
+.top-actions {
+    position:fixed;
+    top:20px;
+    right:20px;
+    display:flex;
+    gap:10px;
+}
 
-        .summary {
-            font-size: 16px;
-            color: var(--secondary);
-        }
+.btn {
+    border:none;
+    padding:10px 16px;
+    border-radius:20px;
+    cursor:pointer;
+}
 
-        .experience-item, .project-item {
-            margin-bottom: 24px;
-        }
+.btn-primary {
+    background:var(--accent);
+    color:white;
+}
 
-        .item-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: baseline;
-            margin-bottom: 4px;
-        }
+.btn-secondary {
+    background:#e5e5ea;
+}
 
-        .item-title {
-            font-size: 17px;
-            font-weight: 600;
-        }
+/* CONTAINER */
+.container {
+    max-width:1000px;
+    margin:auto;
+}
 
-        .item-date {
-            font-size: 14px;
-            color: var(--text-muted);
-            font-weight: 400;
-        }
+/* SECTIONS */
+section { margin-top:40px; }
 
-        .item-org {
-            font-size: 15px;
-            color: var(--secondary);
-            font-weight: 500;
-            margin-bottom: 8px;
-        }
+h2 {
+    font-size:13px;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:16px;
+}
 
-        ul {
-            list-style-type: none;
-            padding-left: 0;
-        }
+/* SUMMARY */
+.summary {
+    font-size:16px;
+    color:var(--text-muted);
+    line-height:1.6;
+}
 
-        li {
-            position: relative;
-            padding-left: 18px;
-            margin-bottom: 6px;
-            font-size: 15px;
-            color: var(--secondary);
-        }
+/* SKILLS */
+.skills {
+    display:flex;
+    flex-wrap:wrap;
+}
 
-        li::before {
-            content: "•";
-            position: absolute;
-            left: 0;
-            color: var(--border);
-        }
+.skills span {
+    background:#e5e5ea;
+    padding:6px 12px;
+    margin:5px;
+    border-radius:20px;
+    font-size:13px;
+}
 
-        .highlight {
-            font-weight: 600;
-            color: var(--text-main);
-        }
+/* GRID */
+.grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
+    gap:20px;
+}
 
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-        }
+/* CARD */
+.card {
+    background:var(--card);
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0 4px 16px rgba(0,0,0,0.06);
+    transition:0.2s;
+}
 
-        .skill-category {
-            font-size: 15px;
-        }
+.card:hover {
+    transform:translateY(-4px);
+}
 
-        .skill-label {
-            font-weight: 600;
-            color: var(--text-main);
-        }
+.card h3 {
+    font-size:16px;
+}
 
-        @media print {
-            body {
-                background: none;
-                padding: 0;
-            }
-            .resume-container {
-                box-shadow: none;
-                padding: 0;
-                width: 100%;
-                max-width: 100%;
-            }
-            .no-print {
-                display: none;
-            }
-        }
+.card span {
+    font-size:13px;
+    color:var(--text-muted);
+}
 
-        @media (max-width: 600px) {
-            .resume-container {
-                padding: 30px 20px;
-            }
-            .item-header {
-                flex-direction: column;
-            }
-            .skills-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+.card ul {
+    margin-top:10px;
+    padding-left:16px;
+}
 
-        .export-btn {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            font-weight: 600;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0,113,227,0.3);
-            transition: transform 0.2s;
-        }
+.card li {
+    font-size:14px;
+    margin-bottom:6px;
+}
 
-        .export-btn:hover {
-            transform: translateY(-2px);
-        }
-    </style>
+/* EDUCATION */
+.simple-item {
+    display:flex;
+    justify-content:space-between;
+}
+
+/* PRINT */
+@media print {
+    .top-actions { display:none; }
+    body { background:none; }
+}
+</style>
 </head>
+
 <body>
-    <button class="export-btn no-print" onclick="window.print()">Export PDF</button>
 
-    <div class="resume-container">
-        <header>
-            <h1>Luiz Seabra de Marco</h1>
-            <div class="subtitle">Systems Developer & AI Specialist</div>
-            <div class="contact-info">
-                <span>Rio de Janeiro, Brazil</span>
-                <span>•</span>
-                <span><a href="https://www.linkedin.com/in/luizfilipeseabra/" target="_blank">linkedin.com/in/luizfilipeseabra</a></span>
-                <span>•</span>
-                <span><a href="https://github.com/LuizSeabraDeMarco" target="_blank">github.com/LuizSeabraDeMarco</a></span>
-            </div>
-        </header>
+<div class="top-actions">
+<button class="btn btn-secondary" onclick="toggleLang()">EN / PT</button>
+<button class="btn btn-primary" onclick="window.print()">PDF</button>
+</div>
 
-        <section>
-            <h2>Professional Summary</h2>
-            <p class="summary">
-                Developer focused on creating systems and technology products with real-world impact. Specialist in <span class="highlight">Artificial Intelligence, Computer Vision, and Automation</span>, with a proven track record of developing widely used open-source libraries and leading internationally recognized sustainable projects.
-            </p>
-        </section>
+<div class="header">
+<h1 data-en="Luiz Seabra de Marco" data-pt="Luiz Seabra de Marco"></h1>
 
-        <section>
-            <h2>Experience & Impact Projects</h2>
-            
-            <div class="project-item">
-                <div class="item-header">
-                    <span class="item-title">CycloCred — Carbon Credit Automation</span>
-                    <span class="item-date">Feb 2026 — Present</span>
-                </div>
-                <div class="item-org">Technical Leadership / Startup</div>
-                <ul>
-                    <li>Developed platform using <span class="highlight">AI to automate Carbon Credit documentation</span>.</li>
-                    <li>Projected <span class="highlight">R$ 10,000 in value</span> generated in the first 5 months of operation.</li>
-                </ul>
-            </div>
+<div class="subtitle"
+data-en="AI Engineer & Full Stack Developer"
+data-pt="Engenheiro de IA & Desenvolvedor Full Stack">
+</div>
 
-            <div class="project-item">
-                <div class="item-header">
-                    <span class="item-title">Eco Ação (UN Support)</span>
-                    <span class="item-date">Jun 2025 — Dec 2025</span>
-                </div>
-                <div class="item-org">AI Developer</div>
-                <ul>
-                    <li>Sustainability-focused AI project selected for <span class="highlight">UN financial support (US$ 50,000)</span>.</li>
-                    <li>Implemented predictive models for environmental impact and resource management.</li>
-                </ul>
-            </div>
+<div class="contact">
+Rio de Janeiro • linkedin • github
+</div>
+</div>
 
-            <div class="project-item">
-                <div class="item-header">
-                    <span class="item-title">Nano-Wait Ecosystem (Open Source)</span>
-                    <span class="item-date">Aug 2024 — Present</span>
-                </div>
-                <div class="item-org">Author & Maintainer</div>
-                <ul>
-                    <li><span class="highlight">Nano-Wait:</span> Python library with <span class="highlight">14,000+ downloads</span> across 60+ countries.</li>
-                    <li><span class="highlight">Nano-Wait Vision:</span> Computer vision extension with <span class="highlight">3,000+ downloads</span>.</li>
-                    <li><span class="highlight">AI Critic:</span> Analysis tool released in 2 weeks with <span class="highlight">7,000+ downloads</span>.</li>
-                </ul>
-            </div>
-        </section>
+<div class="container">
 
-        <section>
-            <h2>Awards & Selections</h2>
-            
-            <div class="experience-item">
-                <div class="item-header">
-                    <span class="item-title">Harvard University — HUVTSP Tech Summer Program</span>
-                    <span class="item-date">2025</span>
-                </div>
-                <ul>
-                    <li>Accepted into the summer tech program with a <span class="highlight">US$ 1,250 merit scholarship</span>.</li>
-                </ul>
-            </div>
+<section>
+<h2 data-en="Summary" data-pt="Resumo"></h2>
+<p class="summary"
+data-en="AI Engineer and Full Stack Developer building real-world systems with Machine Learning and web technologies. Creator of open-source tools used in 60+ countries."
+data-pt="Engenheiro de IA e Desenvolvedor Full Stack focado em sistemas reais com Machine Learning e tecnologias web. Criador de ferramentas utilizadas em mais de 60 países.">
+</p>
+</section>
 
-            <div class="experience-item">
-                <div class="item-header">
-                    <span class="item-title">Inspirit AI — AI for Social Good</span>
-                    <span class="item-date">2025</span>
-                </div>
-                <ul>
-                    <li>Selected for social impact AI projects with a <span class="highlight">US$ 300 scholarship</span>.</li>
-                </ul>
-            </div>
+<section>
+<h2 data-en="Skills" data-pt="Habilidades"></h2>
+<div class="skills">
+<span>Python</span>
+<span>JavaScript</span>
+<span>React</span>
+<span>Node.js</span>
+<span>Machine Learning</span>
+<span>Computer Vision</span>
+<span>APIs</span>
+<span>SQL</span>
+</div>
+</section>
 
-            <div class="experience-item">
-                <div class="item-header">
-                    <span class="item-title">Latin American Leadership Academy (LALA)</span>
-                    <span class="item-date">2024</span>
-                </div>
-                <ul>
-                    <li>Selected for high-impact leadership ecosystem in Latin America.</li>
-                </ul>
-            </div>
-        </section>
+<section>
+<h2 data-en="Projects" data-pt="Projetos"></h2>
 
-        <section id="projects" class="hud-section">
-            <div class="container">
-                <h2 class="section-title">
-                    <span class="bracket">[</span> PROJETOS ESTELARES <span class="bracket">]</span>
-                </h2>
-                <div class="project-grid">
-                    <div class="project-card sci-fi-border"><h3>CycloCred</h3><p>Plataforma, utilizando <span class="highlight">IA para automatizar documentação de Crédito de Carbono</span>. Projeto inicial de startup, com plano de carreira que pode levar a contratação, gerando <span class="highlight">R$ 10.000 em valor em 4–5 meses</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>Eco Ação</h3><p>Projeto de IA voltado à sustentabilidade, com <span class="highlight">apoio financeiro da ONU (US$ 50.000)</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>Nano-Wait</h3><p>Biblioteca Python open-source com <span class="highlight">14.000+ downloads em mais de 60 países</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>Nano-Wait Vision</h3><p>Extensão de visão computacional com <span class="highlight">2.500+ downloads</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>Selenium Nano-Wait</h3><p>Integração com Selenium, <span class="highlight">1.500+ downloads</span>.</p></div>
-                    <div class="project-card sci-fi-border"><h3>AI Critic</h3><p>Projeto lançado em menos de 2 semanas, com <span class="highlight">6.000+ downloads</span>.</p></div>
-                </div>
-            </div>
-        </section>
-    </div>
+<div class="grid">
+
+<div class="card">
+<h3>CycloCred</h3>
+<span>AI Startup</span>
+<ul>
+<li data-en="AI system for carbon credit automation"
+    data-pt="Sistema de IA para automação de créditos de carbono"></li>
+<li data-en="Projected R$10k+ value"
+    data-pt="Projeção de mais de R$10k"></li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Eco Ação</h3>
+<span>UN Supported</span>
+<ul>
+<li data-en="AI for environmental impact analysis"
+    data-pt="IA para análise de impacto ambiental"></li>
+<li data-en="US$50,000 funding support"
+    data-pt="Apoio financeiro de US$50.000"></li>
+</ul>
+</div>
+
+<div class="card">
+<h3>Nano-Wait</h3>
+<span>Open Source</span>
+<ul>
+<li data-en="14k+ downloads in 60+ countries"
+    data-pt="14k+ downloads em 60+ países"></li>
+<li data-en="Automation & computer vision tools"
+    data-pt="Ferramentas de automação e visão computacional"></li>
+</ul>
+</div>
+
+<div class="card">
+<h3>AI Critic</h3>
+<span>AI Tool</span>
+<ul>
+<li data-en="Released in under 6 months"
+    data-pt="Desenvolvido em menos de 6 meses"></li>
+<li data-en="7k+ downloads"
+    data-pt="Mais de 9k downloads"></li>
+</ul>
+</div>
+
+</div>
+
+</section>
+
+<section>
+<h2 data-en="Education" data-pt="Educação"></h2>
+<div class="simple-item">
+<span data-en="High School — Brazil" data-pt="Ensino Médio — Brasil"></span>
+<span>2026</span>
+</div>
+</section>
+
+</div>
+
+<script>
+let lang = "en";
+
+function toggleLang(){
+    lang = lang === "en" ? "pt" : "en";
+    document.querySelectorAll("[data-en]").forEach(el=>{
+        el.innerHTML = el.getAttribute("data-" + lang);
+    });
+}
+
+toggleLang();
+</script>
+
 </body>
 </html>
