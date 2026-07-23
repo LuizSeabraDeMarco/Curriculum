@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Luiz Seabra | AI & Full Stack Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #0d1117;
@@ -16,16 +16,76 @@
             --border: #30363d;
             --card-hover: #21262d;
             --github-green: #238636;
+            --harvard-crimson: #A51C30;
         }
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
             background-color: var(--bg);
             color: var(--text-primary);
-            -webkit-font-smoothing: antialiased;
+            margin: 0;
+            overflow-x: hidden;
         }
         .mono { font-family: 'JetBrains Mono', monospace; }
+        .serif { font-family: 'Libre Baskerville', serif; }
         
-        /* GitHub-like Navigation Tabs */
+        /* 3D Flip Animation Container */
+        .scene {
+            width: 100vw;
+            min-height: 100vh;
+            perspective: 2000px;
+            position: relative;
+        }
+        .card-inner {
+            width: 100%;
+            min-height: 100vh;
+            position: relative;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .is-flipped {
+            transform: rotateY(180deg);
+        }
+        .face {
+            position: absolute;
+            width: 100%;
+            min-height: 100vh;
+            backface-visibility: hidden;
+            top: 0;
+            left: 0;
+        }
+        .face-front {
+            z-index: 2;
+            position: relative;
+        }
+        .face-back {
+            transform: rotateY(180deg);
+            background-color: var(--bg);
+            z-index: 1;
+            display: none;
+        }
+        .is-flipped .face-back {
+            display: block;
+        }
+        .is-flipped .face-front {
+            display: none;
+        }
+
+        /* Harvard Letter Styling */
+        .harvard-letter {
+            background-color: #fff;
+            color: #1a1a1a;
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 4rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            position: relative;
+            border-top: 8px solid var(--harvard-crimson);
+        }
+        @media (max-width: 640px) {
+            .harvard-letter { padding: 2rem 1.5rem; margin: 1rem; }
+        }
+
+        /* Tabs */
         .nav-tab {
             position: relative;
             padding: 8px 12px;
@@ -50,7 +110,6 @@
             background-color: #f78166;
         }
 
-        /* Project Card Styling */
         .project-card {
             background-color: var(--bg);
             border: 1px solid var(--border);
@@ -62,45 +121,9 @@
         .project-card:hover {
             border-color: var(--text-secondary);
             background-color: var(--card-hover);
+            transform: translateY(-2px);
         }
 
-        /* Modal Styling */
-        #modal-overlay {
-            background: rgba(1, 4, 9, 0.85);
-            backdrop-filter: blur(8px);
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            position: fixed;
-            inset: 0;
-            z-index: 100;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 1rem;
-        }
-        #modal-overlay.active {
-            opacity: 1;
-            pointer-events: auto;
-        }
-        #modal-content {
-            transform: scale(0.95);
-            transition: transform 0.2s ease;
-            border: 1px solid var(--border);
-            box-shadow: 0 8px 32px rgba(0,0,0,0.6);
-            background-color: #161b22;
-            width: 100%;
-            max-width: 48rem;
-            max-height: 90vh;
-            overflow-y: auto;
-            border-radius: 0.75rem;
-            position: relative;
-        }
-        #modal-overlay.active #modal-content {
-            transform: scale(1);
-        }
-
-        /* Language Switcher */
         .lang-btn {
             border: 1px solid var(--border);
             background: var(--bg-secondary);
@@ -109,23 +132,6 @@
             font-size: 11px;
             transition: all 0.2s;
         }
-        @media (min-width: 768px) {
-            .lang-btn { padding: 4px 12px; font-size: 12px; }
-        }
-        .lang-btn:hover {
-            background: var(--card-hover);
-            border-color: var(--text-secondary);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
-
-        .fade-in { animation: fadeIn 0.5s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
         .btn-primary {
             background-color: var(--github-green);
             color: white;
@@ -134,9 +140,6 @@
             font-weight: 500;
             font-size: 13px;
             transition: filter 0.2s;
-        }
-        @media (min-width: 768px) {
-            .btn-primary { padding: 6px 16px; font-size: 14px; }
         }
         .btn-primary:hover { filter: brightness(1.1); }
         
@@ -149,543 +152,430 @@
             font-size: 11px;
             font-weight: 600;
         }
+
         .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
+
+        .fade-in { animation: fadeIn 0.5s ease forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        
+        strong { color: #ffffff; font-weight: 600; }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
 
-    <!-- Top Navigation Bar -->
-    <header class="border-b border-[#30363d] bg-[#161b22] py-4 sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
-            <div class="flex items-center gap-2 md:gap-4">
-                <div class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
-                    <span class="text-black font-bold text-base md:text-lg">L</span>
-                </div>
-                <h1 class="text-xs md:text-sm font-semibold truncate max-w-[150px] md:max-w-none">
-                    <span class="text-zinc-400">luizseabra</span> / <span class="text-white">portfolio</span>
-                </h1>
-                <span class="hidden sm:inline-block text-[10px] px-2 py-0.5 rounded-full border border-[#30363d] text-zinc-400 uppercase font-medium">Public</span>
-            </div>
-            <div class="flex items-center gap-2 md:gap-4">
-                <button onclick="toggleLanguage()" class="lang-btn mono uppercase">EN / PT</button>
-                <a href="mailto:lseabrademarco@gmail.com" class="btn-primary">Contact</a>
-            </div>
-        </div>
-        
-        <!-- Tabs -->
-        <div class="max-w-6xl mx-auto px-4 mt-4 flex gap-1 md:gap-2 overflow-x-auto no-scrollbar">
-            <a href="#overview" class="nav-tab active flex items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M0 1.75C0 .784.784 0 1.75 0h12.5C15.216 0 16 .784 16 1.75v12.5A1.75 1.75 0 0 1 14.25 16H1.75A1.75 1.75 0 0 1 0 14.25Zm1.75-.25a.25.25 0 0 0-.25.25v12.5c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V1.75a.25.25 0 0 0-.25-.25Z"></path><path d="M11 5H5v1h6Zm0 2H5v1h6Zm0 2H5v1h6Z"></path></svg>
-                <span id="tab-overview">Overview</span>
-            </a>
-            <a href="#projects" class="nav-tab flex items-center gap-2">
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
-                <span id="tab-projects">Projects</span>
-            </a>
-        </div>
-    </header>
-
-    <main class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
-        <!-- Sidebar -->
-        <aside class="lg:col-span-1">
-            <div class="lg:sticky lg:top-32">
-                <div class="flex flex-row lg:flex-col items-center lg:items-start gap-4 lg:gap-0 mb-6">
-                    <div class="w-20 h-20 md:w-32 md:h-32 lg:w-48 lg:h-48 rounded-full border border-[#30363d] bg-zinc-900 flex items-center justify-center overflow-hidden flex-shrink-0">
-                        <img src="foto.jpeg" alt="Luiz Seabra" class="w-full h-full object-cover">
-                    </div>
-                    <div>
-                        <h2 class="text-xl md:text-2xl font-semibold text-white">Luiz Seabra</h2>
-                        <p class="text-lg md:text-xl text-zinc-500 font-light">luizseabra</p>
-                    </div>
-                </div>
-                
-                <p id="bio-text" class="text-sm text-zinc-300 mb-6 leading-relaxed">
-                    AI Engineer & Full Stack Developer building intelligent systems at the intersection of Machine Learning and Web Infrastructure.
-                </p>
-
-                <div class="space-y-3 border-t border-[#30363d] pt-6 text-sm text-zinc-300">
-                    <div class="flex items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v9.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25v-9.5C0 2.784.784 2 1.75 2ZM1.5 3.75v.781l5.304 3.536a2.25 2.25 0 0 0 2.392 0L14.5 4.531v-.781a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Zm13 2.938-4.523 3.016a3.75 3.75 0 0 1-3.954 0L1.5 6.688v6.562c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V6.688Z"></path></svg>
-                        <a href="mailto:lseabrademarco@gmail.com" class="hover:text-blue-400 break-all">lseabrademarco@gmail.com</a>
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
-                        <a href="https://github.com/LuizSeabraDeMarco" class="hover:text-blue-400 break-all">github.com/LuizSeabraDeMarco</a>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- Main Content Area -->
-        <div class="lg:col-span-3">
-            <!-- Overview Section -->
-            <section id="overview" class="mb-12 fade-in">
-                <div class="flex justify-between items-center mb-4">
-                    <h3 class="text-base font-semibold" id="title-featured">Featured Projects</h3>
-                </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Project Card 01 -->
-                    <div class="project-card p-4 flex flex-col justify-between" onclick="openModal('cyclocred')">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <div class="flex items-center gap-2">
-                                    <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
-                                    <span class="text-blue-400 font-semibold text-sm hover:underline">CycloCred</span>
-                                </div>
-                                <span class="stat-badge">Freelance</span>
+    <div class="scene">
+        <div class="card-inner" id="main-container">
+            <!-- FRONT FACE (Main Portfolio) -->
+            <div class="face face-front" id="front-face">
+                <header class="border-b border-[#30363d] bg-[#161b22] py-4 sticky top-0 z-50">
+                    <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
+                        <div class="flex items-center gap-2 md:gap-4">
+                            <div class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
+                                <span class="text-black font-bold text-base md:text-lg">L</span>
                             </div>
-                            <p class="text-xs text-zinc-400 mb-4" id="card-desc-cyclocred">
-                              Contracted for R$10k, partially delivered due to project interruption (R$1.5k received).
+                            <h1 class="text-xs md:text-sm font-semibold truncate max-w-[150px] md:max-w-none">
+                                <span class="text-zinc-400">luizseabra</span> / <span class="text-white">portfolio</span>
+                            </h1>
+                        </div>
+                        <div class="flex items-center gap-2 md:gap-4">
+                            <button onclick="toggleLanguage()" class="lang-btn mono uppercase">EN / PT</button>
+                            <a href="mailto:lseabrademarco@gmail.com" class="btn-primary">Contact</a>
+                        </div>
+                    </div>
+                    <div class="max-w-6xl mx-auto px-4 mt-4 flex gap-1 md:gap-2 overflow-x-auto no-scrollbar">
+                    </div>
+                </header>
+
+                <main class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
+                    <!-- Sidebar -->
+                    <aside class="lg:col-span-1">
+                        <div class="lg:sticky lg:top-32">
+                            <div class="flex flex-row lg:flex-col items-center lg:items-start gap-4 lg:gap-0 mb-6">
+                                <div class="w-20 h-20 md:w-32 md:h-32 lg:w-48 lg:h-48 rounded-full border border-[#30363d] bg-zinc-900 flex items-center justify-center overflow-hidden flex-shrink-0">
+                                    <img src="foto.jpeg" alt="Luiz Seabra" class="w-full h-full object-cover">
+                                </div>
+                                <div>
+                                    <h2 class="text-xl md:text-2xl font-semibold text-white">Luiz Seabra</h2>
+                                    <p class="text-lg md:text-xl text-zinc-500 font-light">luizseabra</p>
+                                </div>
+                            </div>
+                            <p id="bio-text" class="text-sm text-zinc-300 mb-6 leading-relaxed">
+                                AI Engineer & Full Stack Developer building intelligent systems at the intersection of Machine Learning and Web Infrastructure.
                             </p>
-                        </div>
-                        <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
-                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-500"></span> Python / FastAPI</span>
-                            <span class="flex items-center gap-1">★ 124</span>
-                        </div>
-                    </div>
-
-                    <!-- Project Card 02 -->
-                    <div class="project-card p-4 flex flex-col justify-between" onclick="openModal('ecoacao')">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
+                            <div class="space-y-3 border-t border-[#30363d] pt-6 text-sm text-zinc-300">
                                 <div class="flex items-center gap-2">
-                                    <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
-                                    <span class="text-blue-400 font-semibold text-sm hover:underline">Eco Ação</span>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v9.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25v-9.5C0 2.784.784 2 1.75 2ZM1.5 3.75v.781l5.304 3.536a2.25 2.25 0 0 0 2.392 0L14.5 4.531v-.781a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Zm13 2.938-4.523 3.016a3.75 3.75 0 0 1-3.954 0L1.5 6.688v6.562c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V6.688Z"></path></svg>
+                                    <a href="mailto:lseabrademarco@gmail.com" class="hover:text-blue-400 break-all">lseabrademarco@gmail.com</a>
                                 </div>
-                                <span class="stat-badge">Research / ML</span>
-                            </div>
-                            <p class="text-xs text-zinc-400 mb-4" id="card-desc-ecoacao">Advanced urban thermal analysis using 40 years of Landsat data and Random Forest ML models.</p>
-                        </div>
-                        <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
-                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-yellow-500"></span> GEE / Python</span>
-                            <span class="flex items-center gap-1">★ 89</span>
-                        </div>
-                    </div>
-
-                    <!-- Project Card 03 -->
-                    <div class="project-card p-4 flex flex-col justify-between" onclick="openModal('nanowait')">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
                                 <div class="flex items-center gap-2">
-                                    <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
-                                    <span class="text-blue-400 font-semibold text-sm hover:underline">Nano-Wait</span>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
+                                    <a href="https://github.com/LuizSeabraDeMarco" class="hover:text-blue-400 break-all">github.com/LuizSeabraDeMarco</a>
                                 </div>
-                                <span class="stat-badge">Open Source</span>
                             </div>
-                            <p class="text-xs text-zinc-400 mb-4" id="card-desc-nanowait">High-performance synchronization library used in 60+ countries for intelligent process automation.</p>
                         </div>
-                        <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
-                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-500"></span> Python</span>
-                            <span class="flex items-center gap-1">★ 245</span>
-                        </div>
-                    </div>
+                    </aside>
 
-                    <!-- Project Card 04 -->
-                    <div class="project-card p-4 flex flex-col justify-between" onclick="openModal('aicritic')">
-                        <div>
-                            <div class="flex items-center justify-between mb-2">
-                                <div class="flex items-center gap-2">
-                                    <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
-                                    <span class="text-blue-400 font-semibold text-sm hover:underline">AI Critic</span>
+                    <!-- Main Content -->
+                    <div class="lg:col-span-3">
+                        <section id="overview" class="mb-12 fade-in">
+                            <h3 class="text-base font-semibold mb-4" id="title-featured">Featured Projects</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <!-- Project Cards -->
+                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('cyclocred')">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
+                                                <span class="text-blue-400 font-semibold text-sm hover:underline">CycloCred</span>
+                                            </div>
+                                            <span class="stat-badge">Freelance</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-cyclocred">Infraestrutura proprietária de verificação de créditos de carbono.</p>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
+                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-500"></span> Python / FastAPI</span>
+                                    </div>
                                 </div>
-                                <span class="stat-badge">Open Source</span>
+
+                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('ecoacao')">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
+                                                <span class="text-blue-400 font-semibold text-sm hover:underline">Eco Ação</span>
+                                            </div>
+                                            <span class="stat-badge">Research / ML</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-ecoacao">Combate a ilhas de calor urbanas com IA e <strong>40 anos de dados</strong> de satélite.</p>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
+                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-yellow-500"></span> GEE / Python</span>
+                                    </div>
+                                </div>
+
+                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('nanowait')">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
+                                                <span class="text-blue-400 font-semibold text-sm hover:underline">NanoWait</span>
+                                            </div>
+                                            <span class="stat-badge">Library</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-nanowait">Motor de espera adaptativa com <strong>21k+ downloads</strong> em <strong>83 países</strong>.</p>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
+                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-400"></span> Python</span>
+                                        <span class="flex items-center gap-1">21k+ downloads</span>
+                                    </div>
+                                </div>
+
+                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('aicritic')">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
+                                                <span class="text-blue-400 font-semibold text-sm hover:underline">AI Critic</span>
+                                            </div>
+                                            <span class="stat-badge">AI / Tool</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-aicritic">Auditoria de IA em <strong>7 dimensões</strong> com <strong>17k+ downloads</strong> em <strong>62 países</strong>.</p>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
+                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-green-500"></span> Python / MLOps</span>
+                                        <span class="flex items-center gap-1">17k+ downloads</span>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="text-xs text-zinc-400 mb-4" id="card-desc-aicritic">Real-time content evaluation system leveraging LLMs for automated peer review and quality scoring.</p>
-                        </div>
-                        <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
-                            <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-400"></span> Python / LLM</span>
-                            <span class="flex items-center gap-1">★ 56</span>
-                        </div>
+                        </section>
+
+                        <section id="about" class="mb-12"></section>
+                        <section id="education" class="mb-12"></section>
                     </div>
-                </div>
-            </section>
-
-            <!-- About Me Section -->
-            <section id="about" class="mb-12 fade-in" style="animation-delay: 0.1s;">
-                <!-- Content injected via updateAboutSection -->
-            </section>
-
-            <!-- Academic Achievements Section -->
-            <section id="education" class="mb-12 fade-in" style="animation-delay: 0.2s;">
-                <!-- Content injected via updateEducationSection -->
-            </section>
-        </div>
-    </main>
-
-    <footer class="max-w-6xl mx-auto px-4 py-12 border-t border-[#30363d] text-center text-zinc-500 text-xs">
-        <p>© 2024 Luiz Seabra. Built with passion and technical precision.</p>
-    </footer>
-
-    <!-- Modal System -->
-    <div id="modal-overlay">
-        <div id="modal-content">
-            <div class="p-4 md:p-6 border-b border-[#30363d] flex justify-between items-center sticky top-0 bg-[#161b22] z-10">
-                <h2 id="modal-title" class="text-base md:text-lg font-semibold">Details</h2>
-                <button onclick="closeModal()" class="text-zinc-400 hover:text-white text-xl p-2">✕</button>
+                </main>
             </div>
-            
-            <div id="modal-data" class="p-6 md:p-8">
-                <!-- Content injected via JS -->
+
+            <!-- BACK FACE (Dynamic Content) -->
+            <div class="face face-back" id="back-face">
+                <div class="min-h-screen bg-[#0d1117] flex flex-col">
+                    <header class="border-b border-[#30363d] bg-[#161b22] py-4 sticky top-0 z-50">
+                        <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
+                            <button onclick="flipBack()" class="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors cursor-pointer group">
+                                <svg class="group-hover:-translate-x-1 transition-transform" width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M7.78 12.53a.75.75 0 0 1-1.06 0L2.47 8.28a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L4.81 7.25h9.44a.75.75 0 0 1 0 1.5H4.81l2.97 2.97a.75.75 0 0 1 0 1.06Z"></path></svg>
+                                <span class="font-medium">Voltar / Back</span>
+                            </button>
+                            <div id="detail-header-right" class="flex items-center gap-3">
+                                <span id="detail-meta" class="text-xs mono text-zinc-500 uppercase tracking-wider"></span>
+                                <div id="detail-lang-tag" class="text-[10px] px-2 py-0.5 rounded-full border border-[#30363d] text-zinc-400 font-medium"></div>
+                            </div>
+                        </div>
+                    </header>
+                    
+                    <main id="detail-main-content" class="max-w-4xl mx-auto px-4 py-12 flex-grow">
+                        <!-- Content will be injected here -->
+                    </main>
+                </div>
             </div>
         </div>
     </div>
 
     <script>
+        let currentLang = 'EN';
         const projectData = {
             cyclocred: {
+                type: 'project',
                 title: "CycloCred",
-                subtitle: "AI Infrastructure / Environmental Credits",
-                desc: "Contracted for R$10k to develop an AI-driven infrastructure for environmental credit verification. The system utilized FastAPI for high-performance API endpoints and integrated machine learning models for data validation. Partially delivered due to project interruption.",
-                links: [{ label: "LinkedIn", url: "https://www.linkedin.com/in/luizfilipeseabra/" }],
-                meta: "Enterprise Infrastructure",
-                lang: "Python / Flask",
-                stars: 124
+                subtitle: "Infraestrutura de Verificação de Créditos Ambientais",
+                subtitleEN: "Environmental Credit Verification Infrastructure",
+                meta: "Freelance / NDA",
+                lang: "Python / FastAPI",
+                desc: "Development of a proprietary and confidential infrastructure (under strict NDA) for environmental credit verification. The system utilizes FastAPI for high-performance API endpoints and integrates machine learning models for automated data validation and anomaly detection. Due to confidentiality agreements, public repositories and live demos are restricted, but the architecture was built to ensure scalability, security, and seamless integration with environmental auditing standards.",
+                descPT: "Desenvolvimento de uma infraestrutura proprietária e confidencial (sob rigoroso NDA) para verificação de créditos ambientais. O sistema utiliza FastAPI para endpoints de alta performance e integra modelos de machine learning para validação automatizada de dados e detecção de anomalias. Devido a acordos de confidencialidade, repositórios públicos e demonstrações ao vivo são restritos, mas a arquitetura foi construída para garantir escalabilidade, segurança e integração perfeita com padrões de auditoria ambiental.",
+                stats: [
+                    { label: "Contract Value", labelPT: "Valor do Contrato", value: "R$ 10.000" },
+                    { label: "Status", labelPT: "Status", value: "Partial Delivery / NDA" }
+                ],
+                libs: ["FastAPI", "Pydantic", "PyTorch", "OpenCV", "PostgreSQL"],
+                links: []
             },
             ecoacao: {
+                type: 'project',
                 title: "Eco Ação",
-                subtitle: "Sustainable Urban Development / Machine Learning",
-                desc: "A scientific research project focused on advanced urban thermal analysis. Leveraging 40 years of Landsat satellite data processed through Google Earth Engine (GEE) and Random Forest ML models to identify heat islands and suggest mitigation strategies.",
-                links: [{ label: "LinkedIn", url: "https://www.linkedin.com/in/luizfilipeseabra/" }],
-                meta: "Scientific Research",
+                subtitle: "Análise Térmica Urbana & Climate Tech",
+                subtitleEN: "Urban Thermal Analysis & Climate Tech",
+                meta: "Pesquisa / Machine Learning",
+                metaEN: "Research / Machine Learning",
                 lang: "GEE / Python",
-                stars: 89
+                desc: "<strong>Eco Ação</strong> is an independent climate-tech organization transforming the relationship between people and cities. We use <strong>machine learning</strong> and satellite imagery to map and combat urban heat islands, making urban centers greener and cooler. Our exclusive <strong>Tocantins Framework</strong> analyzes <strong>40 years of Landsat data</strong> with a two-stage AI pipeline, detecting intra-urban thermal anomalies with unprecedented precision. Instead of misleading averages, we score the severity and impact of each microclimate, ensuring cooling interventions happen exactly where needed most. We have already applied this science to analyze <strong>122 thermal anomalies</strong> in Palmas, proving that open-source technology can save lives and natural resources.",
+                descPT: "A <strong>Eco Ação</strong> é uma organização independente de tecnologia climática que transforma radicalmente a relação entre pessoas e cidades. Utilizamos <strong>machine learning</strong> e imagens de satélite de última geração para mapear e combater as ilhas de calor urbanas, tornando os centros urbanos mais verdes, frescos e habitáveis. Nosso exclusivo <strong>Framework Tocantins</strong> processa <strong>40 anos de dados Landsat</strong> através de um pipeline de IA em duas etapas, detectando anomalias térmicas intra-urbanas com uma precisão inédita. Enquanto estudos tradicionais usam médias enganosas, nós pontuamos a severidade e o impacto de cada microclima individualmente, garantindo que as intervenções de resfriamento ocorram exatamente onde são mais urgentes. Já aplicamos essa ciência de ponta para analisar <strong>122 anomalias térmicas</strong> em Palmas, provando que a tecnologia aberta e a inovação são as chaves para salvar vidas e preservar nossos recursos naturais.",
+                stats: [
+                    { label: "Historical Data", labelPT: "Dados Históricos", value: "40 Years (Landsat)" },
+                    { label: "Precision", labelPT: "Precisão", value: "Block-level Detection" }
+                ],
+                libs: ["Google Earth Engine", "Scikit-learn", "Random Forest", "GeoPandas"],
+                links: [{ label: "Site Oficial", labelEN: "Official Website", url: "https://ecoacaobrasil.org/pt" }]
             },
             nanowait: {
-                title: "Nano-Wait",
-                subtitle: "Open Source / Automation Library",
-                desc: "A high-performance synchronization and intelligent waiting library for Python. Designed to handle complex process automation where timing and reliability are critical. Currently adopted by developers in over 60 countries.",
-                links: [
-                    { label: "LinkedIn", url: "https://www.linkedin.com/in/luizfilipeseabra/" },
-                    { label: "Dashboard", url: "https://clickpy.clickhouse.com/dashboard/nano-wait" }
+                type: 'project',
+                title: "NanoWait",
+                subtitle: "Motor de Sincronização Adaptativa",
+                subtitleEN: "Adaptive Synchronization Engine",
+                meta: "Open Source / Biblioteca",
+                metaEN: "Open Source / Library",
+                lang: "Python / Automação",
+                langEN: "Python / Automation",
+                desc: "<strong>NanoWait</strong> is an adaptive execution engine and intelligent synchronization library that replaces Python's obsolete <code>time.sleep()</code>. It monitors CPU and RAM in real-time, learning from every execution to guarantee predictability and performance. With <strong>over 21,000 downloads</strong> and a consolidated presence in <strong>83 countries</strong>, NanoWait is the definitive choice for process automation (RPA), testing, and CI/CD pipelines demanding absolute reliability. Its 'smart' modes dynamically adapt wait times, eliminating flaky failures and accelerating scripts by up to <strong>70%</strong> on idle systems, without compromising stability.",
+                descPT: "O <strong>NanoWait</strong> é um motor de execução adaptativa e sincronização inteligente que revoluciona a automação em Python, substituindo definitivamente o obsoleto <code>time.sleep()</code>. Ele monitora a CPU e a RAM em tempo real, aprendendo com cada execução para garantir previsibilidade e performance máximas. Com <strong>mais de 21.000 downloads</strong> e uma presença consolidada em <strong>83 países</strong>, o NanoWait é a escolha definitiva para automação de processos (RPA), testes e pipelines de CI/CD que exigem confiabilidade absoluta. Seus modos 'smart' e perfis dinâmicos adaptam o tempo de espera automaticamente, eliminando falhas intermitentes e acelerando scripts em até <strong>70%</strong> em sistemas ociosos, sem jamais comprometer a estabilidade.",
+                stats: [
+                    { label: "Downloads", labelPT: "Downloads", value: "21,000+" },
+                    { label: "Global Reach", labelPT: "Alcance Global", value: "83 Countries" }
                 ],
-                meta: "Global Adoption",
-                lang: "Python",
-                stars: 245
+                libs: ["Python Standard Lib", "Threading", "Asyncio", "psutil"],
+                links: [{ label: "Pacote PyPI", labelEN: "PyPI Package", url: "https://pypi.org/project/nano-wait" }]
             },
             aicritic: {
+                type: 'project',
                 title: "AI Critic",
-                subtitle: "AI Tool / Content Evaluation",
-                desc: "An automated content evaluation system that uses Large Language Models (LLMs) to perform peer reviews and quality scoring in real-time. Built to assist in academic and professional writing workflows.",
-                links: [
-                    { label: "LinkedIn", url: "https://www.linkedin.com/in/luizfilipeseabra/" },
-                    { label: "Dashboard", url: "https://clickpy.clickhouse.com/dashboard/ai-critic" }
+                subtitle: "Sistema de Avaliação Abrangente de IA",
+                subtitleEN: "Comprehensive AI Evaluation System",
+                meta: "AI / Ferramenta MLOps",
+                metaEN: "AI / MLOps Tool",
+                lang: "Python / MLOps",
+                langEN: "Python / MLOps",
+                desc: "<strong>AI Critic</strong> is a comprehensive Machine Learning model evaluation tool that goes far beyond simple accuracy. It automatically audits <strong>7 critical dimensions</strong>: performance, robustness, explainability, calibration, data quality, complexity, and fairness. With <strong>over 17,000 downloads</strong> and active adoption in <strong>62 countries</strong>, AI Critic generates unified, actionable reports in JSON or HTML, preventing data leakage, algorithmic bias, and production collapses. Compatible with Scikit-Learn, XGBoost, and LightGBM, it integrates seamlessly into MLOps pipelines, serving as an infallible quality gate for responsible AI deployment.",
+                descPT: "O <strong>AI Critic</strong> é uma ferramenta abrangente e revolucionária de avaliação de modelos de Machine Learning, projetada para ir muito além da simples acurácia. Ele audita automaticamente <strong>7 dimensões críticas</strong>: performance, robustez, explicabilidade, calibração, qualidade dos dados, complexidade e justiça (fairness). Com <strong>mais de 17.000 downloads</strong> e adoção ativa em <strong>62 países</strong>, o AI Critic gera relatórios unificados, acionáveis e prontos para produção em JSON ou HTML. Ele previne proativamente vazamento de dados, viés algorítmico e colapsos em ambiente de produção. Totalmente compatível com Scikit-Learn, XGBoost e LightGBM, integra-se perfeitamente a pipelines de MLOps, atuando como um gate de qualidade infalível para o deploy de Inteligência Artificial responsável.",
+                stats: [
+                    { label: "Downloads", labelPT: "Downloads", value: "17,000+" },
+                    { label: "Global Reach", labelPT: "Alcance Global", value: "62 Countries" }
                 ],
-                meta: "High-Scale Utility",
-                lang: "Python / LLM",
-                stars: 56
-            },
-            whoiam: {
-                title: "Who I Am",
-                subtitle: "The Builder Behind the Code",
-                desc: `I am a 17-year-old developer and researcher driven by the potential of technology to solve systemic problems. My journey started with a curiosity for how systems work and evolved into building complex AI-driven infrastructure.<br><br><b>Key Facts:</b><br>• <b>Harvard Scholar:</b> Awarded a $1,250 merit scholarship for the Harvard Summer Program.<br>• <b>Multidisciplinary:</b> Proficient in both deep technical research (ML/Data Science) and robust software engineering.<br>• <b>Global Perspective:</b> My open-source tools are used by developers in over 60 countries.`,
-                links: [
-                    { label: "LinkedIn", url: "https://www.linkedin.com/in/luizfilipeseabra/" },
-                    { label: "GitHub Profile", url: "https://github.com/LuizSeabraDeMarco" }
-                ],
-                meta: "Biography",
-                lang: "Founder Mindset",
-                stars: "17yo"
-            },
-            whatiwant: {
-                title: "What I Want",
-                subtitle: "Future Goals & Aspirations",
-                desc: `I am looking for high-impact environments where technical excellence meets ambitious goals. Whether it's contributing to cutting-edge AI research or building the next generation of web infrastructure, I want to be where the hardest problems are being solved.<br><br><b>Interests:</b><br>• <b>AI Alignment & Safety:</b> Ensuring intelligent systems benefit humanity.<br>• <b>Scalable Infrastructure:</b> Building systems that handle massive scale gracefully.<br>• <b>Climate Tech:</b> Using data science to mitigate environmental challenges.`,
-                links: [{ label: "LinkedIn", url: "https://www.linkedin.com/in/luizfilipeseabra/" }],
-                meta: "Vision",
-                lang: "High Impact",
-                stars: "Future"
-            },
-            whyhireme: {
-                title: "Why Hire Me",
-                subtitle: "Execution & Depth",
-                desc: `I don't just write code; I build solutions. I understand the entire stack from low-level synchronization to high-level UI/UX. My experience with both freelance contracts and open-source leadership has taught me how to deliver results under pressure.<br><br><b>Strengths:</b><br>• <b>Fast Execution:</b> I ship high-quality code quickly.<br>• <b>Technical Depth:</b> Deep understanding of Python, ML frameworks, and Web protocols.<br>• <b>Reliability:</b> Proven track record of managing projects and delivering value.`,
-                links: [{ label: "LinkedIn", url: "https://www.linkedin.com/in/luizfilipeseabra/" }],
-                meta: "Professional Value",
-                lang: "Reliable",
-                stars: "Top"
+                libs: ["Scikit-Learn", "XGBoost", "LightGBM", "MLflow"],
+                links: [{ label: "Pacote PyPI", labelEN: "PyPI Package", url: "https://pypi.org/project/ai-critic" }]
             }
         };
 
-        function openModal(id) {
+        function flipToProject(id) {
             const data = projectData[id];
-            if (!data) return;
-
-            const container = document.getElementById('modal-data');
-            const modalTitle = document.getElementById('modal-title');
+            const mainContent = document.getElementById('detail-main-content');
+            const headerRight = document.getElementById('detail-header-right');
+            const isPT = currentLang === 'PT';
             
-            modalTitle.innerText = data.title;
-            
-            let linksHtml = data.links.map(link => 
-                `<a href="${link.url}" target="_blank" class="inline-block bg-[#21262d] border border-[#30363d] text-blue-400 px-4 py-2 rounded-md text-sm hover:bg-[#30363d] transition-colors mr-2 mb-2">${link.label} ↗</a>`
-            ).join('');
+            headerRight.style.display = 'flex';
+            document.getElementById('detail-meta').innerText = isPT ? (data.meta || data.metaEN) : (data.metaEN || data.meta);
+            document.getElementById('detail-lang-tag').innerText = isPT ? (data.lang || data.langEN) : (data.langEN || data.lang);
 
-            container.innerHTML = `
+            mainContent.innerHTML = `
                 <div class="mb-8">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span class="text-[10px] font-medium px-2 py-0.5 rounded-full border border-[#30363d] text-zinc-400 uppercase">${data.meta}</span>
-                        <span class="text-[10px] font-medium px-2 py-0.5 rounded-full bg-blue-500/10 text-blue-400 border border-blue-500/20">${data.lang}</span>
-                    </div>
-                    <h2 class="text-2xl md:text-3xl font-bold text-white mb-2">${data.title}</h2>
-                    <p class="text-base md:text-lg text-zinc-400">${data.subtitle}</p>
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">${data.title}</h2>
+                    <p class="text-lg md:text-xl text-zinc-400 font-light">${isPT ? data.subtitle : (data.subtitleEN || data.subtitle)}</p>
                 </div>
-                
-                <div class="space-y-6">
-                    <div>
-                        <p class="text-zinc-300 leading-relaxed text-sm md:text-base">${data.desc}</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div class="md:col-span-2 space-y-8">
+                        <div class="prose prose-invert max-w-none">
+                            <h3 class="text-lg font-semibold text-zinc-300 border-b border-[#30363d] pb-2 mb-4">${isPT ? 'Descrição' : 'Description'}</h3>
+                            <div class="text-zinc-300 leading-relaxed text-sm md:text-base">${isPT ? data.descPT : data.desc}</div>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-semibold text-zinc-300 border-b border-[#30363d] pb-2 mb-4">${isPT ? 'Tecnologias & Bibliotecas' : 'Technologies & Libraries'}</h3>
+                            <div class="flex flex-wrap gap-2">
+                                ${data.libs.map(l => `<span class="px-3 py-1.5 bg-[#21262d] border border-[#30363d] rounded-md text-xs mono text-zinc-300">${l}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="space-y-6">
+                        <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6">
+                            <h3 class="text-xs font-semibold text-zinc-400 uppercase mb-4 tracking-wider">${isPT ? 'Estatísticas' : 'Stats'}</h3>
+                            <div class="space-y-5">
+                                ${data.stats.map(s => `<div><p class="text-[10px] text-zinc-500 uppercase font-bold tracking-wide">${isPT ? s.labelPT : s.label}</p><p class="text-lg text-white font-semibold mt-1">${s.value}</p></div>`).join('')}
+                            </div>
+                        </div>
+                        ${data.links.length > 0 ? `
+                        <div class="space-y-3">
+                            ${data.links.map(l => `
+                                <a href="${l.url}" target="_blank" class="flex items-center justify-between w-full p-3 bg-[#238636] hover:bg-[#2ea043] text-white rounded-lg transition-all duration-200 text-sm font-semibold shadow-lg">
+                                    <span>${isPT ? l.label : (l.labelEN || l.label)}</span>
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.5a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L9.53 9.28a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L13.19 3.5h-1.94a.75.75 0 0 1-.75-.75Z"></path></svg>
+                                </a>
+                            `).join('')}
+                        </div>
+                        ` : ''}
+                    </div>
+                </div>
+            `;
+            executeFlip();
+        }
+
+        function flipToHarvard() {
+            const mainContent = document.getElementById('detail-main-content');
+            const headerRight = document.getElementById('detail-header-right');
+            
+            headerRight.style.display = 'none';
+            mainContent.innerHTML = `
+                <div class="harvard-letter serif fade-in">
+                    <div class="flex justify-between items-start mb-8">
+                        <img src="harvard_logo.png" alt="Harvard University" class="w-48 md:w-64">
+                        <div class="text-right text-zinc-500 text-sm italic">
+                            July 2025<br>Cambridge, MA
+                        </div>
                     </div>
                     
-                    <div class="pt-6 border-t border-[#30363d]">
-                        <h3 class="text-xs font-semibold text-zinc-300 uppercase tracking-wider mb-4">${isEnglish ? "Official Resources" : "Recursos Oficiais"}</h3>
-                        <div class="flex flex-wrap">
-                            ${linksHtml}
+                    <div class="space-y-6 text-[#1a1a1a] leading-relaxed">
+                        <p class="font-bold text-xl">Dear Luiz,</p>
+                        
+                        <p class="font-bold text-harvard-crimson">Congratulations! I am thrilled to inform you that you have been selected to join the 2025 Harvard Undergraduate Ventures–TECH Summer Program (HUVTSP).</p>
+                        
+                        <p>Your acceptance into this prestigious program is a testament to your impressive achievements and potential for future success.</p>
+                        
+                        <p>In addition to your acceptance, we are delighted to award you a <b>scholarship of $1,250</b> with additional fees waived. This distinction reflects the exceptional strength of your application and the confidence we have in your ability to contribute meaningfully to the TECH community.</p>
+                        
+                        <p>HUVTSP offers a unique blend of real-world experience and direct mentorship from renowned founders, investors, and Harvard University faculty. Your selection is particularly impressive given the competitive nature of admissions, with this year's acceptance rate projected to remain <b>under 15%</b>.</p>
+                        
+                        <p>Welcome to an exceptional community of thinkers, leaders, and innovators; we're excited to see your contributions and impact extend far beyond this summer.</p>
+                        
+                        <div class="pt-8">
+                            <p>Warm regards,</p>
+                            <p class="font-bold mt-2">Paul Bottino</p>
+                            <p class="text-sm text-zinc-600">Executive Director<br>Technology and Entrepreneurship Center at Harvard</p>
                         </div>
                     </div>
                 </div>
             `;
-            
-            document.getElementById('modal-overlay').classList.add('active');
-            document.body.style.overflow = 'hidden';
+            executeFlip();
         }
 
-        function closeModal() {
-            document.getElementById('modal-overlay').classList.remove('active');
-            document.body.style.overflow = 'auto';
+        function executeFlip() {
+            document.getElementById('back-face').style.display = 'block';
+            document.getElementById('main-container').classList.add('is-flipped');
+            setTimeout(() => {
+                document.getElementById('front-face').style.display = 'none';
+                window.scrollTo(0, 0);
+            }, 800);
         }
 
-        let isEnglish = true;
+        function flipBack() {
+            document.getElementById('front-face').style.display = 'block';
+            document.getElementById('main-container').classList.remove('is-flipped');
+            setTimeout(() => {
+                document.getElementById('back-face').style.display = 'none';
+            }, 800);
+        }
+
         function toggleLanguage() {
-            isEnglish = !isEnglish;
-            const bio = document.getElementById('bio-text');
-            const tabOverview = document.getElementById('tab-overview');
-            const tabProjects = document.getElementById('tab-projects');
-            const titleFeatured = document.getElementById('title-featured');
-            
-            if (!isEnglish) {
-                bio.innerText = "Engenheiro de IA & Desenvolvedor Full Stack construindo sistemas inteligentes na intersecção de Machine Learning e Infraestrutura Web.";
-                tabOverview.innerText = "Visão Geral";
-                tabProjects.innerText = "Projetos";
-                titleFeatured.innerText = "Projetos em Destaque";
-                updateAboutSectionPT();
-                updateEducationSectionPT();
-                updateProjectDataPT();
-            } else {
-                bio.innerText = "AI Engineer & Full Stack Developer building intelligent systems at the intersection of Machine Learning and Web Infrastructure.";
-                tabOverview.innerText = "Overview";
-                tabProjects.innerText = "Projects";
-                titleFeatured.innerText = "Featured Projects";
-                updateAboutSectionEN();
-                updateEducationSectionEN();
-                updateProjectDataEN();
-            }
+            currentLang = currentLang === 'EN' ? 'PT' : 'EN';
+            updateUI();
         }
 
-        function updateAboutSectionPT() {
-            const aboutSection = document.getElementById('about');
-            if (!aboutSection) return;
-            aboutSection.innerHTML = `
-                <h3 class="text-base font-semibold mb-6 border-b border-[#30363d] pb-2">Sobre Mim</h3>
+        function updateUI() {
+            const isPT = currentLang === 'PT';
+            document.getElementById('title-featured').innerText = isPT ? 'Projetos em Destaque' : 'Featured Projects';
+            document.getElementById('bio-text').innerText = isPT 
+                ? 'Engenheiro de IA & Desenvolvedor Full Stack construindo sistemas inteligentes na interseção de Machine Learning e Infraestrutura Web.'
+                : 'AI Engineer & Full Stack Developer building intelligent systems at the intersection of Machine Learning and Web Infrastructure.';
+
+            document.getElementById('card-desc-cyclocred').innerHTML = isPT ? 'Infraestrutura proprietária de verificação de créditos de carbono.' : 'Proprietary carbon credit verification infrastructure.';
+            document.getElementById('card-desc-ecoacao').innerHTML = isPT ? 'Combate a ilhas de calor urbanas com IA e <strong>40 anos de dados</strong> de satélite.' : 'Fighting urban heat islands with AI and <strong>40 years of satellite data</strong>.';
+            document.getElementById('card-desc-nanowait').innerHTML = isPT ? 'Motor de espera adaptativa com <strong>21k+ downloads</strong> em <strong>83 países</strong>.' : 'Adaptive wait engine with <strong>21k+ downloads</strong> across <strong>83 countries</strong>.';
+            document.getElementById('card-desc-aicritic').innerHTML = isPT ? 'Auditoria de IA em <strong>7 dimensões</strong> com <strong>17k+ downloads</strong> em <strong>62 países</strong>.' : 'AI auditing across <strong>7 dimensions</strong> with <strong>17k+ downloads</strong> in <strong>62 countries</strong>.';
+
+            renderAboutSection();
+            renderEducationSection();
+        }
+
+        function renderAboutSection() {
+            const about = document.getElementById('about');
+            const isPT = currentLang === 'PT';
+            about.innerHTML = `
+                <h3 class="text-base font-semibold mb-6 border-b border-[#30363d] pb-2">${isPT ? 'Sobre Mim' : 'About Me'}</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors cursor-pointer" onclick="openModal('whoiam')">
-                        <h4 class="text-sm font-semibold mb-3 flex items-center gap-2 text-white">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10.5 1.5H5.75a.75.75 0 0 0-.75.75v2.5h2V2.5h2v2H11V2.25a.75.75 0 0 0-.5-.75ZM4.5 6.5h7v5.75c0 .138-.112.25-.25.25h-6.5a.25.25 0 0 1-.25-.25V6.5Zm-1.5 0v5.75A1.75 1.75 0 0 0 4.75 14h6.5A1.75 1.75 0 0 0 13 12.25V6.5h1.25a.75.75 0 0 0 .75-.75V4.5a.75.75 0 0 0-.75-.75h-.75v-.75A1.75 1.75 0 0 0 11.75 1h-6a1.75 1.75 0 0 0-1.75 1.75v.75h-.75a.75.75 0 0 0-.75.75v1.25a.75.75 0 0 0 .75.75H3Z"></path></svg>
-                            Quem Sou
-                        </h4>
-                        <p class="text-xs text-zinc-300 leading-relaxed"><b>Builder de 17 anos</b> obcecado em resolver problemas reais através da tecnologia. Arquiteto sistemas que importam—de infraestrutura de IA a aplicações web full-stack.</p>
-                        <span class="inline-block mt-3 text-xs text-[#58a6ff] hover:underline">Saiba mais →</span>
+                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors">
+                        <h4 class="text-sm font-semibold mb-3 text-white">${isPT ? 'Quem Sou' : 'Who I Am'}</h4>
+                        <p class="text-xs text-zinc-300 leading-relaxed">${isPT ? '<strong>Desenvolvedor de 17 anos</strong> obcecado por resolver problemas reais através da tecnologia.' : '<strong>17-year-old builder</strong> obsessed with solving real problems through technology.'}</p>
                     </div>
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors cursor-pointer" onclick="openModal('whatiwant')">
-                        <h4 class="text-sm font-semibold mb-3 flex items-center gap-2 text-white">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="m8 .5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15Zm0 1.5a6 6 0 1 0 0 12 6 6 0 0 0 0-12ZM8 4a.75.75 0 0 1 .75.75v2.5h2.5a.75.75 0 0 1 0 1.5h-2.5v2.5a.75.75 0 0 1-1.5 0v-2.5h-2.5a.75.75 0 0 1 0-1.5h2.5v-2.5A.75.75 0 0 1 8 4Z"></path></svg>
-                            O Que Quero
-                        </h4>
-                        <p class="text-xs text-zinc-300 leading-relaxed">Oportunidades de alto impacto onde posso contribuir significativamente. Construindo ferramentas de IA de próxima geração ou pesquisa que quebra barreiras.</p>
-                        <span class="inline-block mt-3 text-xs text-[#58a6ff] hover:underline">Veja meu trabalho →</span>
+                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors">
+                        <h4 class="text-sm font-semibold mb-3 text-white">${isPT ? 'O Que Quero' : 'What I Want'}</h4>
+                        <p class="text-xs text-zinc-300 leading-relaxed">${isPT ? 'Oportunidades de alto impacto onde eu possa contribuir significativamente.' : 'High-impact opportunities where I can contribute meaningfully.'}</p>
                     </div>
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors cursor-pointer" onclick="openModal('whyhireme')">
-                        <h4 class="text-sm font-semibold mb-3 flex items-center gap-2 text-white">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15Zm3.28 5.776a.75.75 0 0 0-1.06-1.06L6.97 7.939 5.53 6.495a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4-4Z"></path></svg>
-                            Por Que Me Contratar
-                        </h4>
-                        <p class="text-xs text-zinc-300 leading-relaxed">Execução, profundidade técnica e mentalidade de fundador. Entrego rápido, entendo a stack inteira e resolvo problemas complexos elegantemente.</p>
+                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors">
+                        <h4 class="text-sm font-semibold mb-3 text-white">${isPT ? 'Por Que Me Contratar' : 'Why Hire Me'}</h4>
+                        <p class="text-xs text-zinc-300 leading-relaxed">${isPT ? 'Execução, profundidade técnica e mentalidade de fundador.' : 'Execution, technical depth, and founder mindset.'}</p>
                     </div>
                 </div>
             `;
         }
 
-        function updateAboutSectionEN() {
-            const aboutSection = document.getElementById('about');
-            if (!aboutSection) return;
-            aboutSection.innerHTML = `
-                <h3 class="text-base font-semibold mb-6 border-b border-[#30363d] pb-2">About Me</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors cursor-pointer" onclick="openModal('whoiam')">
-                        <h4 class="text-sm font-semibold mb-3 flex items-center gap-2 text-white">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M10.5 1.5H5.75a.75.75 0 0 0-.75.75v2.5h2V2.5h2v2H11V2.25a.75.75 0 0 0-.5-.75ZM4.5 6.5h7v5.75c0 .138-.112.25-.25.25h-6.5a.25.25 0 0 1-.25-.25V6.5Zm-1.5 0v5.75A1.75 1.75 0 0 0 4.75 14h6.5A1.75 1.75 0 0 0 13 12.25V6.5h1.25a.75.75 0 0 0 .75-.75V4.5a.75.75 0 0 0-.75-.75h-.75v-.75A1.75 1.75 0 0 0 11.75 1h-6a1.75 1.75 0 0 0-1.75 1.75v.75h-.75a.75.75 0 0 0-.75.75v1.25a.75.75 0 0 0 .75.75H3Z"></path></svg>
-                            Who I Am
-                        </h4>
-                        <p class="text-xs text-zinc-300 leading-relaxed"><b>17-year-old builder</b> obsessed with solving real problems through technology. I architect systems that matter—from AI infrastructure to full-stack web applications.</p>
-                        <span class="inline-block mt-3 text-xs text-[#58a6ff] hover:underline">Learn more →</span>
-                    </div>
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors cursor-pointer" onclick="openModal('whatiwant')">
-                        <h4 class="text-sm font-semibold mb-3 flex items-center gap-2 text-white">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="m8 .5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15Zm0 1.5a6 6 0 1 0 0 12 6 6 0 0 0 0-12ZM8 4a.75.75 0 0 1 .75.75v2.5h2.5a.75.75 0 0 1 0 1.5h-2.5v2.5a.75.75 0 0 1-1.5 0v-2.5h-2.5a.75.75 0 0 1 0-1.5h2.5v-2.5A.75.75 0 0 1 8 4Z"></path></svg>
-                            What I Want
-                        </h4>
-                        <p class="text-xs text-zinc-300 leading-relaxed">High-impact opportunities where I can contribute meaningfully. Building next-gen AI tools, leading technical initiatives, or collaborating on research.</p>
-                        <span class="inline-block mt-3 text-xs text-[#58a6ff] hover:underline">See my work →</span>
-                    </div>
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors cursor-pointer" onclick="openModal('whyhireme')">
-                        <h4 class="text-sm font-semibold mb-3 flex items-center gap-2 text-white">
-                            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M8 .5a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15Zm3.28 5.776a.75.75 0 0 0-1.06-1.06L6.97 7.939 5.53 6.495a.75.75 0 0 0-1.06 1.06l2 2a.75.75 0 0 0 1.06 0l4-4Z"></path></svg>
-                            Why Hire Me
-                        </h4>
-                        <p class="text-xs text-zinc-300 leading-relaxed">Execution, technical depth, and founder mindset. I ship fast, understand the entire stack, and solve complex problems elegantly.</p>
-                    </div>
+        function renderEducationSection() {
+            const edu = document.getElementById('education');
+            const isPT = currentLang === 'PT';
+            edu.innerHTML = `
+                <h3 class="text-base font-semibold mb-4 border-b border-[#30363d] pb-2">${isPT ? 'Conquistas Acadêmicas' : 'Academic Achievements'}</h3>
+                <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 max-w-2xl cursor-pointer hover:border-blue-500 transition-colors" onclick="flipToHarvard()">
+                    <ul class="space-y-6">
+                        <li>
+                            <p class="text-sm font-semibold text-white">Colégio Interativo</p>
+                            <p class="text-xs text-zinc-500">2024 — 2026</p>
+                        </li>
+                        <li class="border-t border-[#30363d] pt-4">
+                            <div class="flex justify-between items-start">
+                                <p class="text-sm font-semibold text-white">Harvard University</p>
+                                <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">${isPT ? 'Aceito' : 'Accepted'}</span>
+                            </div>
+                            <p class="text-xs text-zinc-500">Summer Program Acceptance</p>
+                            <p class="text-[10px] text-blue-400 mt-2 flex items-center gap-1 font-medium">${isPT ? 'Clique para ver a carta' : 'Click to see letter'} <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 8 2ZM9.28 9.22a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0Z"></path></svg></p>
+                        </li>
+                    </ul>
                 </div>
             `;
         }
 
-        function updateEducationSectionPT() {
-            const eduSection = document.getElementById('education');
-            if (!eduSection) return;
-            eduSection.innerHTML = `
-                <h3 class="text-base font-semibold mb-4 border-b border-[#30363d] pb-2">Conquistas Acadêmicas</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5">
-                        <h4 class="text-sm font-semibold mb-4 flex items-center gap-2 text-zinc-300">Jornada Acadêmica</h4>
-                        <ul class="space-y-6">
-                            <li>
-                                <p class="text-sm font-semibold text-white">Colégio Interativo</p>
-                                <p class="text-xs text-zinc-500">Ensino Médio / 2024 — 2026</p>
-                                <p class="text-[11px] text-zinc-400 mt-2 italic">Foco em Matemática Avançada e Ciências Computacionais.</p>
-                            </li>
-                            <li class="border-t border-[#30363d] pt-4">
-                                <div class="flex justify-between items-start">
-                                    <p class="text-sm font-semibold text-white">Harvard University</p>
-                                    <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">Aceito</span>
-                                </div>
-                                <p class="text-xs text-zinc-500">Programa de Verão</p>
-                                <p class="text-[11px] text-zinc-400 mt-2">Admissão por mérito no prestigioso programa Venture & Tech.</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            `;
-        }
-
-        function updateEducationSectionEN() {
-            const eduSection = document.getElementById('education');
-            if (!eduSection) return;
-            eduSection.innerHTML = `
-                <h3 class="text-base font-semibold mb-4 border-b border-[#30363d] pb-2">Academic Achievements</h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5">
-                        <h4 class="text-sm font-semibold mb-4 flex items-center gap-2 text-zinc-300">Academic Journey</h4>
-                        <ul class="space-y-6">
-                            <li>
-                                <p class="text-sm font-semibold text-white">Colégio Interativo</p>
-                                <p class="text-xs text-zinc-500">High School / 2024 — 2026</p>
-                                <p class="text-[11px] text-zinc-400 mt-2 italic">Focus on Advanced Mathematics and Computational Sciences.</p>
-                            </li>
-                            <li class="border-t border-[#30363d] pt-4">
-                                <div class="flex justify-between items-start">
-                                    <p class="text-sm font-semibold text-white">Harvard University</p>
-                                    <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">Accepted</span>
-                                </div>
-                                <p class="text-xs text-zinc-500">Summer Program Acceptance</p>
-                                <p class="text-[11px] text-zinc-400 mt-2">Merit-based admission into the prestigious Venture & Tech program.</p>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            `;
-        }
-
-        function updateProjectDataPT() {
-            projectData.whoiam.title = "Quem Sou";
-            projectData.whoiam.subtitle = "O Builder por trás do Código";
-            projectData.whoiam.desc = `Sou um desenvolvedor e pesquisador de 17 anos movido pelo potencial da tecnologia para resolver problemas sistêmicos. Minha jornada começou com a curiosidade sobre como os sistemas funcionam e evoluiu para a construção de infraestruturas complexas baseadas em IA.<br><br><b>Fatos Principais:</b><br>• <b>Harvard Scholar:</b> Admissão por mérito para o prestigiado Programa de Verão de Harvard.<br>• <b>Multidisciplinar:</b> Proficiente tanto em pesquisa técnica profunda (ML/Data Science) quanto em engenharia de software robusta.<br>• <b>Perspectiva Global:</b> Minhas ferramentas de código aberto são usadas por desenvolvedores em mais de 60 países.`;
-            projectData.whoiam.meta = "Biografia";
-            projectData.whoiam.lang = "Mentalidade de Fundador";
-
-            projectData.whatiwant.title = "O Que Quero";
-            projectData.whatiwant.subtitle = "Metas Futuras & Aspirações";
-            projectData.whatiwant.desc = `Busco ambientes de alto impacto onde a excelência técnica encontra objetivos ambiciosos. Seja contribuindo para pesquisas de ponta em IA ou construindo a próxima geração de infraestrutura web, quero estar onde os problemas mais difíceis estão sendo resolvidos.<br><br><b>Interesses:</b><br>• <b>Alinhamento e Segurança de IA:</b> Garantir que sistemas inteligentes beneficiem a humanidade.<br>• <b>Infraestrutura Escalável:</b> Construir sistemas que lidam com escala massiva de forma elegante.<br>• <b>Climate Tech:</b> Usar ciência de dados para mitigar desafios ambientais.`;
-            projectData.whatiwant.meta = "Visão";
-            projectData.whatiwant.lang = "Alto Impacto";
-
-            projectData.whyhireme.title = "Por Que Me Contratar";
-            projectData.whyhireme.subtitle = "Execução & Profundidade";
-            projectData.whyhireme.desc = `Eu não apenas escrevo código; eu construo soluções. Entendo toda a stack, desde a sincronização de baixo nível até a UI/UX de alto nível. Minha experiência com contratos freelance e liderança em projetos open-source me ensinou como entregar resultados sob pressão.<br><br><b>Pontos Fortes:</b><br>• <b>Execução Rápida:</b> Entrego código de alta qualidade rapidamente.<br>• <b>Profundidade Técnica:</b> Compreensão profunda de Python, frameworks de ML e protocolos Web.<br>• <b>Confiabilidade:</b> Histórico comprovado de gerenciamento de projetos e entrega de valor.`;
-            projectData.whyhireme.meta = "Valor Profissional";
-            projectData.whyhireme.lang = "Confiável";
-
-            // Project Translations
-            projectData.cyclocred.desc = "Contratado por R$10k para desenvolver uma infraestrutura baseada em IA para verificação de créditos ambientais. O sistema utilizou FastAPI para endpoints de alta performance e integrou modelos de machine learning para validação de dados. Entregue parcialmente devido à interrupção do projeto.";
-            document.getElementById('card-desc-cyclocred').innerText = "Contratado por R$10k, entregue parcialmente devido à interrupção do projeto (R$1.5k recebidos).";
-
-            projectData.ecoacao.desc = "Projeto de pesquisa científica focado em análise térmica urbana avançada. Utilizando 40 anos de dados de satélite Landsat processados via Google Earth Engine (GEE) e modelos de ML Random Forest para identificar ilhas de calor e sugerir estratégias de mitigação.";
-            document.getElementById('card-desc-ecoacao').innerText = "Análise térmica urbana avançada usando 40 anos de dados Landsat e modelos de ML Random Forest.";
-
-            projectData.nanowait.desc = "Biblioteca de sincronização e espera inteligente de alta performance para Python. Projetada para lidar com automação de processos complexos onde o tempo e a confiabilidade são críticos. Atualmente adotada por desenvolvedores em mais de 60 países.";
-            document.getElementById('card-desc-nanowait').innerText = "Biblioteca de sincronização de alta performance usada em mais de 60 países para automação inteligente.";
-
-            projectData.aicritic.desc = "Sistema de avaliação de conteúdo automatizado que utiliza Modelos de Linguagem de Grande Escala (LLMs) para realizar revisões por pares e pontuação de qualidade em tempo real. Construído para auxiliar em fluxos de escrita acadêmica e profissional.";
-            document.getElementById('card-desc-aicritic').innerText = "Sistema de avaliação de conteúdo em tempo real utilizando LLMs para revisão automatizada e pontuação.";
-        }
-
-        function updateProjectDataEN() {
-            projectData.whoiam.title = "Who I Am";
-            projectData.whoiam.subtitle = "The Builder Behind the Code";
-            projectData.whoiam.desc = `I am a 17-year-old developer and researcher driven by the potential of technology to solve systemic problems. My journey started with a curiosity for how systems work and evolved into building complex AI-driven infrastructure.<br><br><b>Key Facts:</b><br>• <b>Harvard Scholar:</b> Merit-based admission for the prestigious Harvard Summer Program.<br>• <b>Multidisciplinary:</b> Proficient in both deep technical research (ML/Data Science) and robust software engineering.<br>• <b>Global Perspective:</b> My open-source tools are used by developers in over 60 countries.`;
-            projectData.whoiam.meta = "Biography";
-            projectData.whoiam.lang = "Founder Mindset";
-
-            projectData.whatiwant.title = "What I Want";
-            projectData.whatiwant.subtitle = "Future Goals & Aspirations";
-            projectData.whatiwant.desc = `I am looking for high-impact environments where technical excellence meets ambitious goals. Whether it's contributing to cutting-edge AI research or building the next generation of web infrastructure, I want to be where the hardest problems are being solved.<br><br><b>Interests:</b><br>• <b>AI Alignment & Safety:</b> Ensuring intelligent systems benefit humanity.<br>• <b>Scalable Infrastructure:</b> Building systems that handle massive scale gracefully.<br>• <b>Climate Tech:</b> Using data science to mitigate environmental challenges.`;
-            projectData.whatiwant.meta = "Vision";
-            projectData.whatiwant.lang = "High Impact";
-
-            projectData.whyhireme.title = "Why Hire Me";
-            projectData.whyhireme.subtitle = "Execution & Depth";
-            projectData.whyhireme.desc = `I don't just write code; I build solutions. I understand the entire stack from low-level synchronization to high-level UI/UX. My experience with both freelance contracts and open-source leadership has taught me how to deliver results under pressure.<br><br><b>Strengths:</b><br>• <b>Fast Execution:</b> I ship high-quality code quickly.<br>• <b>Technical Depth:</b> Deep understanding of Python, ML frameworks, and Web protocols.<br>• <b>Reliability:</b> Proven track record of managing projects and delivering value.`;
-            projectData.whyhireme.meta = "Professional Value";
-            projectData.whyhireme.lang = "Reliable";
-
-            // Project Translations
-            projectData.cyclocred.desc = "Contracted for R$10k to develop an AI-driven infrastructure for environmental credit verification. The system utilized FastAPI for high-performance API endpoints and integrated machine learning models for data validation. Partially delivered due to project interruption.";
-            document.getElementById('card-desc-cyclocred').innerText = "Contracted for R$10k, partially delivered due to project interruption (R$1.5k received).";
-
-            projectData.ecoacao.desc = "A scientific research project focused on advanced urban thermal analysis. Leveraging 40 years of Landsat satellite data processed through Google Earth Engine (GEE) and Random Forest ML models to identify heat islands and suggest mitigation strategies.";
-            document.getElementById('card-desc-ecoacao').innerText = "Advanced urban thermal analysis using 40 years of Landsat data and Random Forest ML models.";
-
-            projectData.nanowait.desc = "A high-performance synchronization and intelligent waiting library for Python. Designed to handle complex process automation where timing and reliability are critical. Currently adopted by developers in over 60 countries.";
-            document.getElementById('card-desc-nanowait').innerText = "High-performance synchronization library used in 60+ countries for intelligent process automation.";
-
-            projectData.aicritic.desc = "An automated content evaluation system that uses Large Language Models (LLMs) to perform peer reviews and quality scoring in real-time. Built to assist in academic and professional writing workflows.";
-            document.getElementById('card-desc-aicritic').innerText = "Real-time content evaluation system leveraging LLMs for automated peer review and quality scoring.";
-        }
-
-        // Initialize view
         window.onload = () => {
-            updateAboutSectionEN();
-            updateEducationSectionEN();
+            updateUI();
         };
 
-        // Tab switching logic
-        document.querySelectorAll('.nav-tab').forEach(tab => {
-            tab.addEventListener('click', (e) => {
-                document.querySelectorAll('.nav-tab').forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
-            });
-        });
-
-        // Close on ESC
         window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
+            if (e.key === 'Escape') flipBack();
         });
     </script>
 </body>
