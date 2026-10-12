@@ -80,6 +80,7 @@ footer{margin:110px 0 50px;color:var(--mut);font-size:.9rem}
 <div class="links"><a href="https://pypi.org/project/ai-critic">PyPI</a><a href="https://github.com/LuizSeabraDeMarco/ai_critic">GitHub</a></div>
 </article>
 
+<<<<<<< HEAD
 <article class="card big">
 <h3>EcoAção Brasil</h3>
 <p class="role" data-en="Volunteer, bridging pure and applied research">Voluntário, ponte entre pesquisa pura e aplicada</p>
@@ -93,6 +94,43 @@ footer{margin:110px 0 50px;color:var(--mut);font-size:.9rem}
 <p class="role" data-en="Freelance project under NDA">Projeto freelance sob NDA</p>
 <p data-en="An API in FastAPI with data validation and anomaly detection for environmental credit verification. I delivered part of the scope. Code and demo are not public because of the confidentiality agreement.">API em FastAPI com validação de dados e detecção de anomalias para verificação de créditos ambientais. Entreguei parte do escopo. Código e demonstração não são públicos por causa do acordo de confidencialidade.</p>
 </article>
+=======
+                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('nanowait')">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
+                                                <span class="text-blue-400 font-semibold text-sm hover:underline">NanoWait</span>
+                                            </div>
+                                            <span class="stat-badge">Library</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-nanowait">Motor de espera adaptativa com <strong>22k+ downloads</strong> em <strong>83 países</strong>.</p>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
+                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-400"></span> Python</span>
+                                        <span class="flex items-center gap-1">22k+ downloads</span>
+                                    </div>
+                                </div>
+
+                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('aicritic')">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
+                                                <span class="text-blue-400 font-semibold text-sm hover:underline">AI Critic</span>
+                                            </div>
+                                            <span class="stat-badge">AI / Tool</span>
+                                        </div>
+                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-aicritic">Auditoria de IA em <strong>7 dimensões</strong> com <strong>18k+ downloads</strong> em <strong>62 países</strong>.</p>
+                                    </div>
+                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
+                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-green-500"></span> Python / MLOps</span>
+                                        <span class="flex items-center gap-1">18k+ downloads</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </section>
+>>>>>>> 6b930212c437c9b24337b251c64b24662018562d
 
 </div>
 <p class="note" data-en="Download numbers come from PyPI and include automated installs (CI, mirrors). They show reach, not the number of users.">Os números de downloads vêm do PyPI e incluem instalações automáticas (CI, espelhos). Mostram alcance, não número de usuários.</p>
@@ -151,5 +189,195 @@ addEventListener('resize',size);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!still){cancelAnimationFrame(raf);raf=requestAnimationFrame(draw)}});
 size();
 </script>
+=======
+        function flipToHarvard() {
+            const mainContent = document.getElementById('detail-main-content');
+            const headerRight = document.getElementById('detail-header-right');
+            
+            headerRight.style.display = 'none';
+            mainContent.innerHTML = `
+                <div class="harvard-letter serif fade-in">
+                    <div class="flex justify-between items-start mb-8">
+                        <img src="harvard_logo.png" alt="Harvard University" class="w-48 md:w-64">
+                        <div class="text-right text-zinc-500 text-sm italic">
+                            July 2025<br>Cambridge, MA
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-6 text-[#1a1a1a] leading-relaxed">
+                        <p class="font-bold text-xl">Dear Luiz,</p>
+                        
+                        <p class="font-bold text-harvard-crimson">Congratulations! I am thrilled to inform you that you have been selected to join the 2025 Harvard Undergraduate Ventures–TECH Summer Program (HUVTSP).</p>
+                        
+                        <p>Your acceptance into this prestigious program is a testament to your impressive achievements and potential for future success.</p>
+                        
+                        <p>In addition to your acceptance, we are delighted to award you a <b>scholarship of $1,250</b> with additional fees waived. This distinction reflects the exceptional strength of your application and the confidence we have in your ability to contribute meaningfully to the TECH community.</p>
+                        
+                        <p>HUVTSP offers a unique blend of real-world experience and direct mentorship from renowned founders, investors, and Harvard University faculty. Your selection is particularly impressive given the competitive nature of admissions, with this year's acceptance rate projected to remain <b>under 15%</b>.</p>
+                        
+                        <p>Welcome to an exceptional community of thinkers, leaders, and innovators; we're excited to see your contributions and impact extend far beyond this summer.</p>
+                        
+                        <div class="pt-8">
+                            <p>Warm regards,</p>
+                            <p class="font-bold mt-2">Paul Bottino</p>
+                            <p class="text-sm text-zinc-600">Executive Director<br>Technology and Entrepreneurship Center at Harvard</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            executeFlip();
+        }
+
+        function executeFlip() {
+            document.getElementById('back-face').style.display = 'block';
+            document.getElementById('main-container').classList.add('is-flipped');
+            setTimeout(() => {
+                document.getElementById('front-face').style.display = 'none';
+                window.scrollTo(0, 0);
+            }, 800);
+        }
+
+        function flipBack() {
+            document.getElementById('front-face').style.display = 'block';
+            document.getElementById('main-container').classList.remove('is-flipped');
+            setTimeout(() => {
+                document.getElementById('back-face').style.display = 'none';
+            }, 800);
+        }
+
+        function toggleLanguage() {
+            currentLang = currentLang === 'EN' ? 'PT' : 'EN';
+            updateUI();
+        }
+
+        function updateUI() {
+            const isPT = currentLang === 'PT';
+            document.getElementById('title-featured').innerText = isPT ? 'Projetos em Destaque' : 'Featured Projects';
+            document.getElementById('bio-text').innerText = isPT 
+                ? 'Engenheiro de IA & Desenvolvedor Full Stack construindo sistemas inteligentes na interseção de Machine Learning e Infraestrutura Web.'
+                : 'AI Engineer & Full Stack Developer building intelligent systems at the intersection of Machine Learning and Web Infrastructure.';
+
+            document.getElementById('card-desc-cyclocred').innerHTML = isPT ? 'Infraestrutura proprietária de verificação de créditos de carbono.' : 'Proprietary carbon credit verification infrastructure.';
+            document.getElementById('card-desc-ecoacao').innerHTML = isPT ? 'Combate a ilhas de calor urbanas com IA e <strong>40 anos de dados</strong> de satélite.' : 'Fighting urban heat islands with AI and <strong>40 years of satellite data</strong>.';
+            document.getElementById('card-desc-nanowait').innerHTML = isPT ? 'Motor de espera adaptativa com <strong>22k+ downloads</strong> em <strong>83 países</strong>.' : 'Adaptive wait engine with <strong>22k+ downloads</strong> across <strong>83 countries</strong>.';
+            document.getElementById('card-desc-aicritic').innerHTML = isPT ? 'Auditoria de IA em <strong>7 dimensões</strong> com <strong>18k+ downloads</strong> em <strong>62 países</strong>.' : 'AI auditing across <strong>7 dimensions</strong> with <strong>18k+ downloads</strong> in <strong>62 countries</strong>.';
+
+            renderAboutSection();
+            renderSkillsSection();
+            renderEducationSection();
+        }
+
+        function renderAboutSection() {
+            const about = document.getElementById('about');
+            const isPT = currentLang === 'PT';
+            about.innerHTML = `
+                <h3 class="text-base font-semibold mb-6 border-b border-[#30363d] pb-2">${isPT ? 'Sobre Mim' : 'About Me'}</h3>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors">
+                        <h4 class="text-sm font-semibold mb-3 text-white">${isPT ? 'Quem Sou' : 'Who I Am'}</h4>
+                        <p class="text-xs text-zinc-300 leading-relaxed">${isPT ? '<strong>Desenvolvedor de 17 anos</strong> obcecado por resolver problemas reais através da tecnologia.' : '<strong>17-year-old builder</strong> obsessed with solving real problems through technology.'}</p>
+                    </div>
+                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors">
+                        <h4 class="text-sm font-semibold mb-3 text-white">${isPT ? 'O Que Quero' : 'What I Want'}</h4>
+                        <p class="text-xs text-zinc-300 leading-relaxed">${isPT ? 'Oportunidades de alto impacto onde eu possa contribuir significativamente.' : 'High-impact opportunities where I can contribute meaningfully.'}</p>
+                    </div>
+                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors">
+                        <h4 class="text-sm font-semibold mb-3 text-white">${isPT ? 'Por Que Me Contratar' : 'Why Hire Me'}</h4>
+                        <p class="text-xs text-zinc-300 leading-relaxed">${isPT ? 'Execução, profundidade técnica e mentalidade de fundador.' : 'Execution, technical depth, and founder mindset.'}</p>
+                    </div>
+                </div>
+            `;
+        }
+
+
+        function renderSkillsSection() {
+            const skills = document.getElementById('skills');
+            const isPT = currentLang === 'PT';
+
+            const languages = [
+                { name: 'Python', color: '#4B8BBE' },
+                { name: 'JavaScript', color: '#F1E05A' },
+                { name: 'TypeScript', color: '#4FC1E9' },
+                { name: 'PHP', color: '#A390E4' },
+                { name: 'Kotlin', color: '#C299FC' },
+                { name: 'C++', color: '#F76E8B' },
+                { name: 'SQL', color: '#F2A65A' }
+            ];
+
+            const web = [
+                { name: 'HTML', color: '#FF7043' },
+                { name: 'CSS', color: '#61AFEF' },
+                { name: 'React', color: '#61DAFB' }
+            ];
+
+
+
+
+            const renderTokens = (arr) => {
+                return arr
+                    .map((l) =>
+                        `<span class="stack-token mono">${l.name}</span>`
+                    )
+                    .join('<span class="text-zinc-600 mx-1.5">&middot;</span>');
+            };
+
+
+
+        }
+
+
+            skills.innerHTML = `
+                <h3 class="text-base font-semibold mb-4 md:mb-6 border-b border-[#30363d] pb-2">${isPT ? 'Stack Tecnológico' : 'Tech Stack'}</h3>
+                <div class="terminal-window bg-[#0d1117] border border-[#30363d] rounded-xl overflow-hidden max-w-2xl shadow-lg">
+                    <div class="flex items-center gap-2 px-4 py-3 bg-[#161b22] border-b border-[#30363d]">
+                        <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
+                        <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
+                        <span class="mono text-xs text-zinc-500 ml-2">bash &mdash; tech-stack</span>
+                    </div>
+                    <div class="p-5 md:p-6 mono text-[13px] md:text-sm leading-loose">
+                        <p class="text-zinc-500"><span class="text-[#3fb950]">luiz</span><span class="text-zinc-600">@</span><span class="text-[#58a6ff]">portfolio</span><span class="text-zinc-600">:</span><span class="text-[#58a6ff]">~</span><span class="text-zinc-400">$</span> cat tech-stack.txt</p>
+                        <p class="mt-4 text-zinc-500 text-[11px] uppercase tracking-wider"># ${isPT ? 'linguagens' : 'languages'}</p>
+                        <p class="mb-3">${renderTokens(languages)}</p>
+                        <p class="text-zinc-500 text-[11px] uppercase tracking-wider"># web &amp; frameworks</p>
+                        <p>${renderTokens(web)}</p>
+                        <p class="mt-4 text-zinc-500"><span class="text-[#3fb950]">luiz</span><span class="text-zinc-600">@</span><span class="text-[#58a6ff]">portfolio</span><span class="text-zinc-600">:</span><span class="text-[#58a6ff]">~</span><span class="text-zinc-400">$</span> <span class="cursor-blink text-zinc-300">&#9612;</span></p>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderEducationSection() {
+            const edu = document.getElementById('education');
+            const isPT = currentLang === 'PT';
+            edu.innerHTML = `
+                <h3 class="text-base font-semibold mb-4 border-b border-[#30363d] pb-2">${isPT ? 'Conquistas Acadêmicas' : 'Academic Achievements'}</h3>
+                <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 max-w-2xl cursor-pointer hover:border-blue-500 transition-colors" onclick="flipToHarvard()">
+                    <ul class="space-y-6">
+                        <li>
+                            <p class="text-sm font-semibold text-white">Colégio Interativo</p>
+                            <p class="text-xs text-zinc-500">2024 — 2026</p>
+                        </li>
+                        <li class="border-t border-[#30363d] pt-4">
+                            <div class="flex justify-between items-start">
+                                <p class="text-sm font-semibold text-white">Harvard University</p>
+                                <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">${isPT ? 'Aceito' : 'Accepted'}</span>
+                            </div>
+                            <p class="text-xs text-zinc-500">Summer Program Acceptance</p>
+                            <p class="text-[10px] text-blue-400 mt-2 flex items-center gap-1 font-medium">${isPT ? 'Clique para ver a carta' : 'Click to see letter'} <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 8 2ZM9.28 9.22a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0Z"></path></svg></p>
+                        </li>
+                    </ul>
+                </div>
+            `;
+        }
+
+        window.onload = () => {
+            updateUI();
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') flipBack();
+        });
+    </script>
 </body>
 </html>
