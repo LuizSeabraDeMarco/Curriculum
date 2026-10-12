@@ -1,637 +1,155 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Luiz Seabra | AI & Full Stack Portfolio</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --bg: #0d1117;
-            --bg-secondary: #161b22;
-            --accent: #58a6ff;
-            --text-primary: #c9d1d9;
-            --text-secondary: #8b949e;
-            --border: #30363d;
-            --card-hover: #21262d;
-            --github-green: #238636;
-            --harvard-crimson: #A51C30;
-        }
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
-            background-color: var(--bg);
-            color: var(--text-primary);
-            margin: 0;
-            overflow-x: hidden;
-        }
-        .mono { font-family: 'JetBrains Mono', monospace; }
-        .serif { font-family: 'Libre Baskerville', serif; }
-        
-        /* 3D Flip Animation Container */
-        .scene {
-            width: 100vw;
-            min-height: 100vh;
-            perspective: 2000px;
-            position: relative;
-        }
-        .card-inner {
-            width: 100%;
-            min-height: 100vh;
-            position: relative;
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-            transform-style: preserve-3d;
-        }
-        .is-flipped {
-            transform: rotateY(180deg);
-        }
-        .face {
-            position: absolute;
-            width: 100%;
-            min-height: 100vh;
-            backface-visibility: hidden;
-            top: 0;
-            left: 0;
-        }
-        .face-front {
-            z-index: 2;
-            position: relative;
-        }
-        .face-back {
-            transform: rotateY(180deg);
-            background-color: var(--bg);
-            z-index: 1;
-            display: none;
-        }
-        .is-flipped .face-back {
-            display: block;
-        }
-        .is-flipped .face-front {
-            display: none;
-        }
-
-        /* Harvard Letter Styling */
-        .harvard-letter {
-            background-color: #fff;
-            color: #1a1a1a;
-            max-width: 800px;
-            margin: 2rem auto;
-            padding: 4rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            position: relative;
-            border-top: 8px solid var(--harvard-crimson);
-        }
-        @media (max-width: 640px) {
-            .harvard-letter { padding: 2rem 1.5rem; margin: 1rem; }
-        }
-
-        /* Tabs */
-        .nav-tab {
-            position: relative;
-            padding: 8px 12px;
-            font-size: 13px;
-            color: var(--text-primary);
-            transition: all 0.2s;
-            border-radius: 6px;
-            white-space: nowrap;
-        }
-        @media (min-width: 768px) {
-            .nav-tab { padding: 8px 16px; font-size: 14px; }
-        }
-        .nav-tab:hover { background-color: var(--bg-secondary); }
-        .nav-tab.active { font-weight: 600; }
-        .nav-tab.active::after {
-            content: '';
-            position: absolute;
-            bottom: -18px;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background-color: #f78166;
-        }
-
-        .project-card {
-            background-color: var(--bg);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            transition: all 0.2s ease;
-            cursor: pointer;
-            height: 100%;
-        }
-        .project-card:hover {
-            border-color: var(--text-secondary);
-            background-color: var(--card-hover);
-            transform: translateY(-2px);
-        }
-
-        .lang-btn {
-            border: 1px solid var(--border);
-            background: var(--bg-secondary);
-            padding: 4px 10px;
-            border-radius: 6px;
-            font-size: 11px;
-            transition: all 0.2s;
-        }
-        .btn-primary {
-            background-color: var(--github-green);
-            color: white;
-            padding: 6px 12px;
-            border-radius: 6px;
-            font-weight: 500;
-            font-size: 13px;
-            transition: filter 0.2s;
-        }
-        .btn-primary:hover { filter: brightness(1.1); }
-        
-        .stat-badge {
-            background: #23863620;
-            color: #3fb950;
-            border: 1px solid #23863640;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: var(--bg); }
-        ::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
-        ::-webkit-scrollbar-thumb:hover { background: #484f58; }
-
-        .fade-in { animation: fadeIn 0.5s ease forwards; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        strong { color: #ffffff; font-weight: 600; }
-
-        /* Tech Stack terminal */
-        @keyframes cursorBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        .cursor-blink { animation: cursorBlink 1s steps(1) infinite; }
-        .terminal-window { transition: border-color 0.3s ease, box-shadow 0.3s ease; }
-        .terminal-window:hover { border-color: #58a6ff66; box-shadow: 0 20px 45px -25px rgba(0,0,0,0.7); }
-        .stack-token { transition: text-shadow 0.2s ease, opacity 0.2s ease; opacity: 0.92; }
-        .stack-token:hover { opacity: 1; text-shadow: 0 0 10px currentColor; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Luiz Seabra – Desenvolvedor Python</title>
+<meta name="description" content="Luiz Seabra, 17 anos. Bibliotecas Python publicadas no PyPI. Procurando o primeiro estágio em desenvolvimento de software.">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#070b14;--panel:#0d1424;--line:#1f2a44;--tx:#dfe6f5;--mut:#8e9bb8;--sun:#ffc857;--sky:#7fb7ff}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--tx);font:16px/1.65 'IBM Plex Sans',system-ui,sans-serif}
+#sky{position:fixed;inset:0;z-index:-1}
+a{color:var(--sky);text-underline-offset:3px}
+a:hover{color:var(--sun)}
+a:focus-visible,button:focus-visible{outline:2px solid var(--sun);outline-offset:3px}
+.wrap{max-width:880px;margin:0 auto;padding:0 22px}
+nav{display:flex;justify-content:flex-end;gap:18px;padding:18px 0;font-size:.9rem}
+nav button{background:none;border:1px solid var(--line);color:var(--tx);border-radius:6px;padding:4px 12px;font:inherit;cursor:pointer}
+nav button:hover{border-color:var(--sun)}
+h1,h2,h3{font-family:'Bricolage Grotesque',sans-serif;line-height:1.1}
+h1{font-size:clamp(3rem,11vw,6.5rem);font-weight:800;letter-spacing:-.03em;margin-top:9vh}
+.lead{font-size:clamp(1.15rem,2.6vw,1.45rem);max-width:34em;margin:22px 0 28px;color:var(--tx)}
+.lead b{color:var(--sun);font-weight:500}
+.cta{display:flex;flex-wrap:wrap;gap:12px}
+.cta a{padding:10px 18px;border-radius:6px;border:1px solid var(--line);text-decoration:none;color:var(--tx)}
+.cta a:first-child{background:var(--sun);color:#1a1300;border-color:var(--sun);font-weight:500}
+.cta a:hover{border-color:var(--sun);color:var(--tx)}
+.cta a:first-child:hover{color:#1a1300;filter:brightness(1.08)}
+section{margin-top:96px}
+h2{font-size:2rem;font-weight:700;margin-bottom:26px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,380px),1fr));gap:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:26px}
+.card.big{grid-column:1/-1}
+h3{font-size:1.35rem;font-weight:700}
+.role{color:var(--sun);font-size:.92rem;margin:4px 0 12px}
+.card p{color:#c5cee2;font-size:.98rem}
+.card p+p{margin-top:10px}
+.facts{margin:14px 0 0 18px;color:var(--mut);font-size:.92rem}
+.links{margin-top:16px;display:flex;gap:16px;flex-wrap:wrap;font-size:.92rem}
+.note{color:var(--mut);font-size:.88rem;margin-top:16px;max-width:46em}
+dl{display:grid;grid-template-columns:150px 1fr;gap:12px 20px}
+dt{color:var(--mut)}
+@media(max-width:600px){dl{grid-template-columns:1fr;gap:2px}dd{margin-bottom:12px}}
+footer{margin:110px 0 50px;color:var(--mut);font-size:.9rem}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
 </head>
 <body>
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="wrap">
+<nav><a href="#projetos" data-en="Projects">Projetos</a><a href="#sobre" data-en="About">Sobre</a><a href="#contato" data-en="Contact">Contato</a><button id="lg" aria-label="Language">EN</button></nav>
 
-    <div class="scene">
-        <div class="card-inner" id="main-container">
-            <!-- FRONT FACE (Main Portfolio) -->
-            <div class="face face-front" id="front-face">
-                <header class="border-b border-[#30363d] bg-[#161b22] py-4 sticky top-0 z-50">
-                    <div class="max-w-6xl mx-auto px-4 flex justify-between items-center">
-                        <div class="flex items-center gap-2 md:gap-4">
-                            <div class="w-7 h-7 md:w-8 md:h-8 rounded-full bg-white flex items-center justify-center overflow-hidden flex-shrink-0">
-                                <span class="text-black font-bold text-base md:text-lg">L</span>
-                            </div>
-                            <h1 class="text-xs md:text-sm font-semibold truncate max-w-[150px] md:max-w-none">
-                                <span class="text-zinc-400">luizseabra</span> / <span class="text-white">portfolio</span>
-                            </h1>
-                        </div>
-                        <div class="flex items-center gap-2 md:gap-4">
-                            <button onclick="toggleLanguage()" class="lang-btn mono uppercase">EN / PT</button>
-                            <a href="mailto:lseabrademarco@gmail.com" class="btn-primary">Contact</a>
-                        </div>
-                    </div>
-                    <div class="max-w-6xl mx-auto px-4 mt-4 flex gap-1 md:gap-2 overflow-x-auto no-scrollbar">
-                    </div>
-                </header>
+<header>
+<h1>Luiz Seabra</h1>
+<p class="lead" data-en="I'm 17 and have published Python libraries since 2024. I'm looking for my first internship or freelance work in software development (web and apps).">Tenho 17 anos e publico bibliotecas Python desde 2024. Procuro meu primeiro estágio ou trabalho freelance em desenvolvimento de software (web e apps).</p>
+<div class="cta"><a href="#projetos" data-en="See my work">Ver meus trabalhos</a><a href="mailto:lseabrademarco@gmail.com">lseabrademarco@gmail.com</a><a href="https://github.com/LuizSeabraDeMarco">GitHub</a></div>
+</header>
 
-                <main class="max-w-6xl mx-auto px-4 py-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
-                    <!-- Sidebar -->
-                    <aside class="lg:col-span-1">
-                        <div class="lg:sticky lg:top-32">
-                            <div class="flex flex-row lg:flex-col items-center lg:items-start gap-4 lg:gap-0 mb-6">
-                                <div class="w-20 h-20 md:w-32 md:h-32 lg:w-48 lg:h-48 rounded-full border border-[#30363d] bg-zinc-900 flex items-center justify-center overflow-hidden flex-shrink-0">
-                                    <img src="foto.jpeg" alt="Luiz Seabra" class="w-full h-full object-cover">
-                                </div>
-                                <div>
-                                    <h2 class="text-xl md:text-2xl font-semibold text-white">Luiz Seabra</h2>
-                                    <p class="text-lg md:text-xl text-zinc-500 font-light">luizseabra</p>
-                                </div>
-                            </div>
-                            <p id="bio-text" class="text-sm text-zinc-300 mb-6 leading-relaxed">
-                                AI Engineer & Full Stack Developer building intelligent systems at the intersection of Machine Learning and Web Infrastructure.
-                            </p>
-                            <div class="space-y-3 border-t border-[#30363d] pt-6 text-sm text-zinc-300">
-                                <div class="flex items-center gap-2">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M1.75 2h12.5c.966 0 1.75.784 1.75 1.75v9.5A1.75 1.75 0 0 1 14.25 15H1.75A1.75 1.75 0 0 1 0 13.25v-9.5C0 2.784.784 2 1.75 2ZM1.5 3.75v.781l5.304 3.536a2.25 2.25 0 0 0 2.392 0L14.5 4.531v-.781a.25.25 0 0 0-.25-.25H1.75a.25.25 0 0 0-.25.25Zm13 2.938-4.523 3.016a3.75 3.75 0 0 1-3.954 0L1.5 6.688v6.562c0 .138.112.25.25.25h12.5a.25.25 0 0 0 .25-.25V6.688Z"></path></svg>
-                                    <a href="mailto:lseabrademarco@gmail.com" class="hover:text-blue-400 break-all">lseabrademarco@gmail.com</a>
-                                </div>
-                                <div class="flex items-center gap-2">
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="m7.775 3.275 1.25-1.25a3.5 3.5 0 1 1 4.95 4.95l-2.5 2.5a3.5 3.5 0 0 1-4.95 0 .751.751 0 0 1 .018-1.042.751.751 0 0 1 1.042-.018 1.998 1.998 0 0 0 2.83 0l2.5-2.5a2.002 2.002 0 0 0-2.83-2.83l-1.25 1.25a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042Zm-4.69 9.64a1.998 1.998 0 0 0 2.83 0l1.25-1.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042l-1.25 1.25a3.5 3.5 0 1 1-4.95-4.95l2.5-2.5a3.5 3.5 0 0 1 4.95 0 .751.751 0 0 1-.018 1.042.751.751 0 0 1-1.042.018 1.998 1.998 0 0 0-2.83 0l-2.5 2.5a1.998 1.998 0 0 0 0 2.83Z"></path></svg>
-                                    <a href="https://github.com/LuizSeabraDeMarco" class="hover:text-blue-400 break-all">github.com/LuizSeabraDeMarco</a>
-                                </div>
-                            </div>
-                        </div>
-                    </aside>
+<section id="projetos">
+<h2 data-en="Projects">Projetos</h2>
+<div class="grid">
 
-                    <!-- Main Content -->
-                    <div class="lg:col-span-3">
-                        <section id="overview" class="mb-12 fade-in">
-                            <h3 class="text-base font-semibold mb-4" id="title-featured">Featured Projects</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <!-- Project Cards -->
-                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('cyclocred')">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <div class="flex items-center gap-2">
-                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
-                                                <span class="text-blue-400 font-semibold text-sm hover:underline">CycloCred</span>
-                                            </div>
-                                            <span class="stat-badge">Freelance</span>
-                                        </div>
-                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-cyclocred">Infraestrutura proprietária de verificação de créditos de carbono.</p>
-                                    </div>
-                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
-                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-500"></span> Python / FastAPI</span>
-                                    </div>
-                                </div>
+<article class="card">
+<h3>NanoWait</h3>
+<p class="role" data-en="Author and maintainer, Python library">Autor e mantenedor, biblioteca Python</p>
+<p data-en="Waiting and resilient execution for automation and tests: a guaranteed minimum wait, condition polling, and retries with exponential backoff and jitter. Includes profiles for CI, RPA and slow environments.">Espera e execução resiliente para automação e testes: espera com piso garantido, polling de condições e retry com backoff exponencial e jitter. Tem perfis para CI, RPA e ambientes lentos.</p>
+<p data-en="What I learned: I fixed a bug where a wait could end earlier than requested. A promise like that has to hold every time.">O que aprendi: corrigi um bug em que a espera podia terminar antes do pedido. Uma garantia assim precisa valer sempre.</p>
+<ul class="facts"><li data-en="24,000+ PyPI downloads">Mais de 24 mil downloads no PyPI</li><li data-en="First release in August 2024, now at version 7">Primeira versão em agosto de 2024, hoje na versão 7</li><li data-en="Tests with pytest, MIT license">Testes com pytest, licença MIT</li></ul>
+<div class="links"><a href="https://pypi.org/project/nano-wait">PyPI</a><a href="https://github.com/LuizSeabraDeMarco/NanoWait">GitHub</a></div>
+</article>
 
-                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('ecoacao')">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <div class="flex items-center gap-2">
-                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
-                                                <span class="text-blue-400 font-semibold text-sm hover:underline">Eco Ação</span>
-                                            </div>
-                                            <span class="stat-badge">Research / ML</span>
-                                        </div>
-                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-ecoacao">Combate a ilhas de calor urbanas com IA e <strong>40 anos de dados</strong> de satélite.</p>
-                                    </div>
-                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
-                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-yellow-500"></span> GEE / Python</span>
-                                    </div>
-                                </div>
+<article class="card">
+<h3>AI Critic</h3>
+<p class="role" data-en="Author and maintainer, Python library">Autor e mantenedor, biblioteca Python</p>
+<p data-en="Audits machine learning models by task type: classification, regression, clustering, anomaly detection, dimensionality reduction and reinforcement learning. It scores seven dimensions: performance, robustness, explainability, calibration, data quality, fairness and complexity.">Audita modelos de machine learning por tipo de tarefa: classificação, regressão, clustering, detecção de anomalias, redução de dimensionalidade e aprendizado por reforço. Avalia sete dimensões: desempenho, robustez, explicabilidade, calibração, qualidade dos dados, justiça e complexidade.</p>
+<p data-en="When a dimension has no valid reading, the report says so instead of inventing a score. The report is evidence for review, not a certification.">Quando uma dimensão não tem leitura válida, o relatório diz isso em vez de inventar uma nota. O relatório é evidência para revisão, não certificação.</p>
+<ul class="facts"><li data-en="20,000+ PyPI downloads">Mais de 20 mil downloads no PyPI</li><li data-en="First release in January 2026">Primeira versão em janeiro de 2026</li><li data-en="JSON and HTML reports, CI gate, custom evaluators">Relatórios em JSON e HTML, gate para CI, avaliadores customizados</li></ul>
+<div class="links"><a href="https://pypi.org/project/ai-critic">PyPI</a><a href="https://github.com/LuizSeabraDeMarco/ai_critic">GitHub</a></div>
+</article>
 
-                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('nanowait')">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <div class="flex items-center gap-2">
-                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
-                                                <span class="text-blue-400 font-semibold text-sm hover:underline">NanoWait</span>
-                                            </div>
-                                            <span class="stat-badge">Library</span>
-                                        </div>
-                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-nanowait">Motor de espera adaptativa com <strong>21k+ downloads</strong> em <strong>83 países</strong>.</p>
-                                    </div>
-                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
-                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-blue-400"></span> Python</span>
-                                        <span class="flex items-center gap-1">21k+ downloads</span>
-                                    </div>
-                                </div>
+<article class="card big">
+<h3>EcoAção Brasil</h3>
+<p class="role" data-en="Volunteer, bridging pure and applied research">Voluntário, ponte entre pesquisa pura e aplicada</p>
+<p data-en="A climate-tech nonprofit that maps urban heat islands with satellite imagery and machine learning (Tocantins Framework and UrbanAI). I did not found it. My job was to understand what the pure research produced and, together with other programmers, organize that work so it was implemented correctly in code.">ONG de tecnologia climática que mapeia ilhas de calor urbanas com imagens de satélite e machine learning (Framework Tocantins e UrbanAI). Não fundei a organização. Meu papel foi entender o que a pesquisa pura produzia e, junto com outros programadores, organizar esse trabalho para que fosse implementado corretamente em código.</p>
+<!-- TODO: adicione aqui o período em que você atuou e uma entrega concreta sua -->
+<div class="links"><a href="https://ecoacaobrasil.org/pt" data-en="Organization website">Site da organização</a></div>
+</article>
 
-                                <div class="project-card p-4 flex flex-col justify-between" onclick="flipToProject('aicritic')">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <div class="flex items-center gap-2">
-                                                <svg class="text-zinc-500" width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.714 1.7a.75.75 0 1 1-1.072 1.05A2.495 2.495 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.708A2.486 2.486 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.249.249 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"></path></svg>
-                                                <span class="text-blue-400 font-semibold text-sm hover:underline">AI Critic</span>
-                                            </div>
-                                            <span class="stat-badge">AI / Tool</span>
-                                        </div>
-                                        <p class="text-xs text-zinc-400 mb-4" id="card-desc-aicritic">Auditoria de IA em <strong>7 dimensões</strong> com <strong>17k+ downloads</strong> em <strong>62 países</strong>.</p>
-                                    </div>
-                                    <div class="flex items-center gap-4 text-[10px] mono text-zinc-500">
-                                        <span class="flex items-center gap-1"><span class="w-3 h-3 rounded-full bg-green-500"></span> Python / MLOps</span>
-                                        <span class="flex items-center gap-1">17k+ downloads</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </section>
+<article class="card big">
+<h3>CycloCred</h3>
+<p class="role" data-en="Freelance project under NDA">Projeto freelance sob NDA</p>
+<p data-en="An API in FastAPI with data validation and anomaly detection for environmental credit verification. I delivered part of the scope. Code and demo are not public because of the confidentiality agreement.">API em FastAPI com validação de dados e detecção de anomalias para verificação de créditos ambientais. Entreguei parte do escopo. Código e demonstração não são públicos por causa do acordo de confidencialidade.</p>
+</article>
 
-                        <section id="about" class="mb-12"></section>
-                        <section id="skills" class="mb-12"></section>
-                        <section id="education" class="mb-12"></section>
-                    </div>
-                </main>
-            </div>
+</div>
+<p class="note" data-en="Download numbers come from PyPI and include automated installs (CI, mirrors). They show reach, not the number of users.">Os números de downloads vêm do PyPI e incluem instalações automáticas (CI, espelhos). Mostram alcance, não número de usuários.</p>
+</section>
 
-            <!-- BACK FACE (Dynamic Content) -->
-            <div class="face face-back" id="back-face">
-                <div class="min-h-screen bg-[#0d1117] flex flex-col">
-                    <header class="border-b border-[#30363d] bg-[#161b22] py-4 sticky top-0 z-50">
-                        <div class="max-w-4xl mx-auto px-4 flex justify-between items-center">
-                            <button onclick="flipBack()" class="flex items-center gap-2 text-zinc-400 hover:text-white transition-colors cursor-pointer group">
-                                <svg class="group-hover:-translate-x-1 transition-transform" width="20" height="20" viewBox="0 0 16 16" fill="currentColor"><path d="M7.78 12.53a.75.75 0 0 1-1.06 0L2.47 8.28a.75.75 0 0 1 0-1.06l4.25-4.25a.751.751 0 0 1 1.042.018.751.751 0 0 1 .018 1.042L4.81 7.25h9.44a.75.75 0 0 1 0 1.5H4.81l2.97 2.97a.75.75 0 0 1 0 1.06Z"></path></svg>
-                                <span class="font-medium">Voltar / Back</span>
-                            </button>
-                            <div id="detail-header-right" class="flex items-center gap-3">
-                                <span id="detail-meta" class="text-xs mono text-zinc-500 uppercase tracking-wider"></span>
-                                <div id="detail-lang-tag" class="text-[10px] px-2 py-0.5 rounded-full border border-[#30363d] text-zinc-400 font-medium"></div>
-                            </div>
-                        </div>
-                    </header>
-                    
-                    <main id="detail-main-content" class="max-w-4xl mx-auto px-4 py-12 flex-grow">
-                        <!-- Content will be injected here -->
-                    </main>
-                </div>
-            </div>
-        </div>
-    </div>
+<section id="sobre">
+<h2 data-en="About">Sobre</h2>
+<dl>
+<dt data-en="Now">Agora</dt><dd data-en="Finishing high school at Colégio Interativo in 2026. Planning to start Control and Automation Engineering in 2027.">Terminando o ensino médio no Colégio Interativo em 2026. Pretendo cursar Engenharia de Controle e Automação em 2027.</dd>
+<dt data-en="Looking for">Procuro</dt><dd data-en="A first internship or freelance work building web and mobile software, where I can work in a team and learn from code review.">Primeiro estágio ou trabalho freelance construindo software web e mobile, onde eu possa trabalhar em equipe e aprender com code review.</dd>
+<dt data-en="Use daily">Uso no dia a dia</dt><dd>Python, FastAPI, scikit-learn, PostgreSQL, Git, pytest, empacotamento e publicação no PyPI.</dd>
+<dt data-en="Studying">Estudando</dt><dd>JavaScript, TypeScript, React, SQL, Kotlin, PHP, C++.</dd>
+<dt data-en="Program">Programa</dt><dd data-en="Admitted to the Harvard Undergraduate Ventures–TECH Summer Program (HUVTSP) 2025, an online program for high school students, with a partial scholarship. I did not attend.">Admitido no Harvard Undergraduate Ventures–TECH Summer Program (HUVTSP) 2025, programa online para estudantes do ensino médio, com bolsa parcial. Não cheguei a cursá-lo.</dd>
+</dl>
+</section>
 
-    <script>
-        let currentLang = 'EN';
-        const projectData = {
-            cyclocred: {
-                type: 'project',
-                title: "CycloCred",
-                subtitle: "Infraestrutura de Verificação de Créditos Ambientais",
-                subtitleEN: "Environmental Credit Verification Infrastructure",
-                meta: "Freelance / NDA",
-                lang: "Python / FastAPI",
-                desc: "Development of a proprietary and confidential infrastructure (under strict NDA) for environmental credit verification. The system utilizes FastAPI for high-performance API endpoints and integrates machine learning models for automated data validation and anomaly detection. Due to confidentiality agreements, public repositories and live demos are restricted, but the architecture was built to ensure scalability, security, and seamless integration with environmental auditing standards.",
-                descPT: "Desenvolvimento de uma infraestrutura proprietária e confidencial (sob rigoroso NDA) para verificação de créditos ambientais. O sistema utiliza FastAPI para endpoints de alta performance e integra modelos de machine learning para validação automatizada de dados e detecção de anomalias. Devido a acordos de confidencialidade, repositórios públicos e demonstrações ao vivo são restritos, mas a arquitetura foi construída para garantir escalabilidade, segurança e integração perfeita com padrões de auditoria ambiental.",
-                stats: [
-                    { label: "Contract Value", labelPT: "Valor do Contrato", value: "R$ 10.000" },
-                    { label: "Status", labelPT: "Status", value: "Partial Delivery / NDA" }
-                ],
-                libs: ["FastAPI", "Pydantic", "PyTorch", "OpenCV", "PostgreSQL"],
-                links: []
-            },
-            ecoacao: {
-                type: 'project',
-                title: "Eco Ação",
-                subtitle: "Análise Térmica Urbana & Climate Tech",
-                subtitleEN: "Urban Thermal Analysis & Climate Tech",
-                meta: "Pesquisa / Machine Learning",
-                metaEN: "Research / Machine Learning",
-                lang: "GEE / Python",
-                desc: "<strong>Eco Ação</strong> is an independent climate-tech organization transforming the relationship between people and cities. We use <strong>machine learning</strong> and satellite imagery to map and combat urban heat islands, making urban centers greener and cooler. Our exclusive <strong>Tocantins Framework</strong> analyzes <strong>40 years of Landsat data</strong> with a two-stage AI pipeline, detecting intra-urban thermal anomalies with unprecedented precision. Instead of misleading averages, we score the severity and impact of each microclimate, ensuring cooling interventions happen exactly where needed most. We have already applied this science to analyze <strong>122 thermal anomalies</strong> in Palmas, proving that open-source technology can save lives and natural resources.",
-                descPT: "A <strong>Eco Ação</strong> é uma organização independente de tecnologia climática que transforma radicalmente a relação entre pessoas e cidades. Utilizamos <strong>machine learning</strong> e imagens de satélite de última geração para mapear e combater as ilhas de calor urbanas, tornando os centros urbanos mais verdes, frescos e habitáveis. Nosso exclusivo <strong>Framework Tocantins</strong> processa <strong>40 anos de dados Landsat</strong> através de um pipeline de IA em duas etapas, detectando anomalias térmicas intra-urbanas com uma precisão inédita. Enquanto estudos tradicionais usam médias enganosas, nós pontuamos a severidade e o impacto de cada microclima individualmente, garantindo que as intervenções de resfriamento ocorram exatamente onde são mais urgentes. Já aplicamos essa ciência de ponta para analisar <strong>122 anomalias térmicas</strong> em Palmas, provando que a tecnologia aberta e a inovação são as chaves para salvar vidas e preservar nossos recursos naturais.",
-                stats: [
-                    { label: "Historical Data", labelPT: "Dados Históricos", value: "40 Years (Landsat)" },
-                    { label: "Precision", labelPT: "Precisão", value: "Block-level Detection" }
-                ],
-                libs: ["Google Earth Engine", "Scikit-learn", "Random Forest", "GeoPandas"],
-                links: [{ label: "Site Oficial", labelEN: "Official Website", url: "https://ecoacaobrasil.org/pt" }]
-            },
-            nanowait: {
-                type: 'project',
-                title: "NanoWait",
-                subtitle: "Motor de Sincronização Adaptativa",
-                subtitleEN: "Adaptive Synchronization Engine",
-                meta: "Open Source / Biblioteca",
-                metaEN: "Open Source / Library",
-                lang: "Python / Automação",
-                langEN: "Python / Automation",
-                desc: "<strong>NanoWait</strong> is an adaptive execution engine and intelligent synchronization library that replaces Python's obsolete <code>time.sleep()</code>. It monitors CPU and RAM in real-time, learning from every execution to guarantee predictability and performance. With <strong>over 21,000 downloads</strong> and a consolidated presence in <strong>83 countries</strong>, NanoWait is the definitive choice for process automation (RPA), testing, and CI/CD pipelines demanding absolute reliability. Its 'smart' modes dynamically adapt wait times, eliminating flaky failures and accelerating scripts by up to <strong>70%</strong> on idle systems, without compromising stability.",
-                descPT: "O <strong>NanoWait</strong> é um motor de execução adaptativa e sincronização inteligente que revoluciona a automação em Python, substituindo definitivamente o obsoleto <code>time.sleep()</code>. Ele monitora a CPU e a RAM em tempo real, aprendendo com cada execução para garantir previsibilidade e performance máximas. Com <strong>mais de 21.000 downloads</strong> e uma presença consolidada em <strong>83 países</strong>, o NanoWait é a escolha definitiva para automação de processos (RPA), testes e pipelines de CI/CD que exigem confiabilidade absoluta. Seus modos 'smart' e perfis dinâmicos adaptam o tempo de espera automaticamente, eliminando falhas intermitentes e acelerando scripts em até <strong>70%</strong> em sistemas ociosos, sem jamais comprometer a estabilidade.",
-                stats: [
-                    { label: "Downloads", labelPT: "Downloads", value: "21,000+" },
-                    { label: "Global Reach", labelPT: "Alcance Global", value: "83 Countries" }
-                ],
-                libs: ["Python Standard Lib", "Threading", "Asyncio", "psutil"],
-                links: [{ label: "Pacote PyPI", labelEN: "PyPI Package", url: "https://pypi.org/project/nano-wait" }]
-            },
-            aicritic: {
-                type: 'project',
-                title: "AI Critic",
-                subtitle: "Sistema de Avaliação Abrangente de IA",
-                subtitleEN: "Comprehensive AI Evaluation System",
-                meta: "AI / Ferramenta MLOps",
-                metaEN: "AI / MLOps Tool",
-                lang: "Python / MLOps",
-                langEN: "Python / MLOps",
-                desc: "<strong>AI Critic</strong> is a comprehensive Machine Learning model evaluation tool that goes far beyond simple accuracy. It automatically audits <strong>7 critical dimensions</strong>: performance, robustness, explainability, calibration, data quality, complexity, and fairness. With <strong>over 17,000 downloads</strong> and active adoption in <strong>62 countries</strong>, AI Critic generates unified, actionable reports in JSON or HTML, preventing data leakage, algorithmic bias, and production collapses. Compatible with Scikit-Learn, XGBoost, and LightGBM, it integrates seamlessly into MLOps pipelines, serving as an infallible quality gate for responsible AI deployment.",
-                descPT: "O <strong>AI Critic</strong> é uma ferramenta abrangente e revolucionária de avaliação de modelos de Machine Learning, projetada para ir muito além da simples acurácia. Ele audita automaticamente <strong>7 dimensões críticas</strong>: performance, robustez, explicabilidade, calibração, qualidade dos dados, complexidade e justiça (fairness). Com <strong>mais de 17.000 downloads</strong> e adoção ativa em <strong>62 países</strong>, o AI Critic gera relatórios unificados, acionáveis e prontos para produção em JSON ou HTML. Ele previne proativamente vazamento de dados, viés algorítmico e colapsos em ambiente de produção. Totalmente compatível com Scikit-Learn, XGBoost e LightGBM, integra-se perfeitamente a pipelines de MLOps, atuando como um gate de qualidade infalível para o deploy de Inteligência Artificial responsável.",
-                stats: [
-                    { label: "Downloads", labelPT: "Downloads", value: "17,000+" },
-                    { label: "Global Reach", labelPT: "Alcance Global", value: "62 Countries" }
-                ],
-                libs: ["Scikit-Learn", "XGBoost", "LightGBM", "MLflow"],
-                links: [{ label: "Pacote PyPI", labelEN: "PyPI Package", url: "https://pypi.org/project/ai-critic" }]
-            }
-        };
+<section id="contato">
+<h2 data-en="Contact">Contato</h2>
+<p><a href="mailto:lseabrademarco@gmail.com">lseabrademarco@gmail.com</a><br><a href="https://github.com/LuizSeabraDeMarco">github.com/LuizSeabraDeMarco</a></p>
+</section>
 
-        function flipToProject(id) {
-            const data = projectData[id];
-            const mainContent = document.getElementById('detail-main-content');
-            const headerRight = document.getElementById('detail-header-right');
-            const isPT = currentLang === 'PT';
-            
-            headerRight.style.display = 'flex';
-            document.getElementById('detail-meta').innerText = isPT ? (data.meta || data.metaEN) : (data.metaEN || data.meta);
-            document.getElementById('detail-lang-tag').innerText = isPT ? (data.lang || data.langEN) : (data.langEN || data.lang);
+<footer data-en="Luiz Seabra, 2026">Luiz Seabra, 2026</footer>
+</div>
 
-            mainContent.innerHTML = `
-                <div class="mb-8">
-                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-2">${data.title}</h2>
-                    <p class="text-lg md:text-xl text-zinc-400 font-light">${isPT ? data.subtitle : (data.subtitleEN || data.subtitle)}</p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <div class="md:col-span-2 space-y-8">
-                        <div class="prose prose-invert max-w-none">
-                            <h3 class="text-lg font-semibold text-zinc-300 border-b border-[#30363d] pb-2 mb-4">${isPT ? 'Descrição' : 'Description'}</h3>
-                            <div class="text-zinc-300 leading-relaxed text-sm md:text-base">${isPT ? data.descPT : data.desc}</div>
-                        </div>
-                        <div>
-                            <h3 class="text-lg font-semibold text-zinc-300 border-b border-[#30363d] pb-2 mb-4">${isPT ? 'Tecnologias & Bibliotecas' : 'Technologies & Libraries'}</h3>
-                            <div class="flex flex-wrap gap-2">
-                                ${data.libs.map(l => `<span class="px-3 py-1.5 bg-[#21262d] border border-[#30363d] rounded-md text-xs mono text-zinc-300">${l}</span>`).join('')}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="space-y-6">
-                        <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-6">
-                            <h3 class="text-xs font-semibold text-zinc-400 uppercase mb-4 tracking-wider">${isPT ? 'Estatísticas' : 'Stats'}</h3>
-                            <div class="space-y-5">
-                                ${data.stats.map(s => `<div><p class="text-[10px] text-zinc-500 uppercase font-bold tracking-wide">${isPT ? s.labelPT : s.label}</p><p class="text-lg text-white font-semibold mt-1">${s.value}</p></div>`).join('')}
-                            </div>
-                        </div>
-                        ${data.links.length > 0 ? `
-                        <div class="space-y-3">
-                            ${data.links.map(l => `
-                                <a href="${l.url}" target="_blank" class="flex items-center justify-between w-full p-3 bg-[#238636] hover:bg-[#2ea043] text-white rounded-lg transition-all duration-200 text-sm font-semibold shadow-lg">
-                                    <span>${isPT ? l.label : (l.labelEN || l.label)}</span>
-                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor"><path d="M3.75 2h3.5a.75.75 0 0 1 0 1.5h-3.5a.25.25 0 0 0-.25.25v8.5c0 .138.112.25.25.25h8.5a.25.25 0 0 0 .25-.25v-3.5a.75.75 0 0 1 1.5 0v3.5A1.75 1.75 0 0 1 12.25 14h-8.5A1.75 1.75 0 0 1 2 12.25v-8.5C2 2.784 2.784 2 3.75 2Zm6.75.5a.75.75 0 0 1 .75-.75h3.5a.75.75 0 0 1 .75.75v3.5a.75.75 0 0 1-1.5 0V4.56L9.53 9.28a.751.751 0 0 1-1.042-.018.751.751 0 0 1-.018-1.042L13.19 3.5h-1.94a.75.75 0 0 1-.75-.75Z"></path></svg>
-                                </a>
-                            `).join('')}
-                        </div>
-                        ` : ''}
-                    </div>
-                </div>
-            `;
-            executeFlip();
-        }
+<script>
+const els=[...document.querySelectorAll('[data-en]')];
+els.forEach(e=>e.dataset.pt=e.textContent);
+const btn=document.getElementById('lg');
+function setLang(l){
+  document.documentElement.lang=l==='pt'?'pt-BR':'en';
+  els.forEach(e=>e.textContent=e.dataset[l]);
+  btn.textContent=l==='pt'?'EN':'PT';btn.dataset.l=l;
+}
+btn.dataset.l='pt';
+btn.onclick=()=>setLang(btn.dataset.l==='pt'?'en':'pt');
+if(!(navigator.language||'pt').startsWith('pt'))setLang('en');
 
-        function flipToHarvard() {
-            const mainContent = document.getElementById('detail-main-content');
-            const headerRight = document.getElementById('detail-header-right');
-            
-            headerRight.style.display = 'none';
-            mainContent.innerHTML = `
-                <div class="harvard-letter serif fade-in">
-                    <div class="flex justify-between items-start mb-8">
-                        <img src="harvard_logo.png" alt="Harvard University" class="w-48 md:w-64">
-                        <div class="text-right text-zinc-500 text-sm italic">
-                            July 2025<br>Cambridge, MA
-                        </div>
-                    </div>
-                    
-                    <div class="space-y-6 text-[#1a1a1a] leading-relaxed">
-                        <p class="font-bold text-xl">Dear Luiz,</p>
-                        
-                        <p class="font-bold text-harvard-crimson">Congratulations! I am thrilled to inform you that you have been selected to join the 2025 Harvard Undergraduate Ventures–TECH Summer Program (HUVTSP).</p>
-                        
-                        <p>Your acceptance into this prestigious program is a testament to your impressive achievements and potential for future success.</p>
-                        
-                        <p>In addition to your acceptance, we are delighted to award you a <b>scholarship of $1,250</b> with additional fees waived. This distinction reflects the exceptional strength of your application and the confidence we have in your ability to contribute meaningfully to the TECH community.</p>
-                        
-                        <p>HUVTSP offers a unique blend of real-world experience and direct mentorship from renowned founders, investors, and Harvard University faculty. Your selection is particularly impressive given the competitive nature of admissions, with this year's acceptance rate projected to remain <b>under 15%</b>.</p>
-                        
-                        <p>Welcome to an exceptional community of thinkers, leaders, and innovators; we're excited to see your contributions and impact extend far beyond this summer.</p>
-                        
-                        <div class="pt-8">
-                            <p>Warm regards,</p>
-                            <p class="font-bold mt-2">Paul Bottino</p>
-                            <p class="text-sm text-zinc-600">Executive Director<br>Technology and Entrepreneurship Center at Harvard</p>
-                        </div>
-                    </div>
-                </div>
-            `;
-            executeFlip();
-        }
-
-        function executeFlip() {
-            document.getElementById('back-face').style.display = 'block';
-            document.getElementById('main-container').classList.add('is-flipped');
-            setTimeout(() => {
-                document.getElementById('front-face').style.display = 'none';
-                window.scrollTo(0, 0);
-            }, 800);
-        }
-
-        function flipBack() {
-            document.getElementById('front-face').style.display = 'block';
-            document.getElementById('main-container').classList.remove('is-flipped');
-            setTimeout(() => {
-                document.getElementById('back-face').style.display = 'none';
-            }, 800);
-        }
-
-        function toggleLanguage() {
-            currentLang = currentLang === 'EN' ? 'PT' : 'EN';
-            updateUI();
-        }
-
-        function updateUI() {
-            const isPT = currentLang === 'PT';
-            document.getElementById('title-featured').innerText = isPT ? 'Projetos em Destaque' : 'Featured Projects';
-            document.getElementById('bio-text').innerText = isPT 
-                ? 'Engenheiro de IA & Desenvolvedor Full Stack construindo sistemas inteligentes na interseção de Machine Learning e Infraestrutura Web.'
-                : 'AI Engineer & Full Stack Developer building intelligent systems at the intersection of Machine Learning and Web Infrastructure.';
-
-            document.getElementById('card-desc-cyclocred').innerHTML = isPT ? 'Infraestrutura proprietária de verificação de créditos de carbono.' : 'Proprietary carbon credit verification infrastructure.';
-            document.getElementById('card-desc-ecoacao').innerHTML = isPT ? 'Combate a ilhas de calor urbanas com IA e <strong>40 anos de dados</strong> de satélite.' : 'Fighting urban heat islands with AI and <strong>40 years of satellite data</strong>.';
-            document.getElementById('card-desc-nanowait').innerHTML = isPT ? 'Motor de espera adaptativa com <strong>21k+ downloads</strong> em <strong>83 países</strong>.' : 'Adaptive wait engine with <strong>21k+ downloads</strong> across <strong>83 countries</strong>.';
-            document.getElementById('card-desc-aicritic').innerHTML = isPT ? 'Auditoria de IA em <strong>7 dimensões</strong> com <strong>17k+ downloads</strong> em <strong>62 países</strong>.' : 'AI auditing across <strong>7 dimensions</strong> with <strong>17k+ downloads</strong> in <strong>62 countries</strong>.';
-
-            renderAboutSection();
-            renderSkillsSection();
-            renderEducationSection();
-        }
-
-        function renderAboutSection() {
-            const about = document.getElementById('about');
-            const isPT = currentLang === 'PT';
-            about.innerHTML = `
-                <h3 class="text-base font-semibold mb-6 border-b border-[#30363d] pb-2">${isPT ? 'Sobre Mim' : 'About Me'}</h3>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors">
-                        <h4 class="text-sm font-semibold mb-3 text-white">${isPT ? 'Quem Sou' : 'Who I Am'}</h4>
-                        <p class="text-xs text-zinc-300 leading-relaxed">${isPT ? '<strong>Desenvolvedor de 17 anos</strong> obcecado por resolver problemas reais através da tecnologia.' : '<strong>17-year-old builder</strong> obsessed with solving real problems through technology.'}</p>
-                    </div>
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors">
-                        <h4 class="text-sm font-semibold mb-3 text-white">${isPT ? 'O Que Quero' : 'What I Want'}</h4>
-                        <p class="text-xs text-zinc-300 leading-relaxed">${isPT ? 'Oportunidades de alto impacto onde eu possa contribuir significativamente.' : 'High-impact opportunities where I can contribute meaningfully.'}</p>
-                    </div>
-                    <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 hover:border-[#58a6ff] transition-colors">
-                        <h4 class="text-sm font-semibold mb-3 text-white">${isPT ? 'Por Que Me Contratar' : 'Why Hire Me'}</h4>
-                        <p class="text-xs text-zinc-300 leading-relaxed">${isPT ? 'Execução, profundidade técnica e mentalidade de fundador.' : 'Execution, technical depth, and founder mindset.'}</p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderSkillsSection() {
-            const skills = document.getElementById('skills');
-            const isPT = currentLang === 'PT';
-
-            const languages = [
-                { name: 'Python', color: '#4B8BBE' },
-                { name: 'JavaScript', color: '#F1E05A' },
-                { name: 'TypeScript', color: '#4FC1E9' },
-                { name: 'PHP', color: '#A390E4' },
-                { name: 'Kotlin', color: '#C299FC' },
-                { name: 'C++', color: '#F76E8B' },
-                { name: 'SQL', color: '#F2A65A' }
-            ];
-            const web = [
-                { name: 'HTML', color: '#FF7043' },
-                { name: 'CSS', color: '#61AFEF' },
-                { name: 'React', color: '#61DAFB' }
-            ];
-
-            const renderTokens = (arr) => arr.map((l, i) => {
-                const sep = i < arr.length - 1 ? '<span class="text-zinc-600 mx-1.5">&middot;</span>' : '';
-                return `<span class="stack-token mono" style="color:${l.color}">${l.name}</span>${sep}`;
-            }).join('');
-
-            skills.innerHTML = `
-                <h3 class="text-base font-semibold mb-4 md:mb-6 border-b border-[#30363d] pb-2">${isPT ? 'Stack Tecnológico' : 'Tech Stack'}</h3>
-                <div class="terminal-window bg-[#0d1117] border border-[#30363d] rounded-xl overflow-hidden max-w-2xl shadow-lg">
-                    <div class="flex items-center gap-2 px-4 py-3 bg-[#161b22] border-b border-[#30363d]">
-                        <span class="w-3 h-3 rounded-full bg-[#ff5f56]"></span>
-                        <span class="w-3 h-3 rounded-full bg-[#ffbd2e]"></span>
-                        <span class="w-3 h-3 rounded-full bg-[#27c93f]"></span>
-                        <span class="mono text-xs text-zinc-500 ml-2">bash &mdash; tech-stack</span>
-                    </div>
-                    <div class="p-5 md:p-6 mono text-[13px] md:text-sm leading-loose">
-                        <p class="text-zinc-500"><span class="text-[#3fb950]">luiz</span><span class="text-zinc-600">@</span><span class="text-[#58a6ff]">portfolio</span><span class="text-zinc-600">:</span><span class="text-[#58a6ff]">~</span><span class="text-zinc-400">$</span> cat tech-stack.txt</p>
-                        <p class="mt-4 text-zinc-500 text-[11px] uppercase tracking-wider"># ${isPT ? 'linguagens' : 'languages'}</p>
-                        <p class="mb-3">${renderTokens(languages)}</p>
-                        <p class="text-zinc-500 text-[11px] uppercase tracking-wider"># web &amp; frameworks</p>
-                        <p>${renderTokens(web)}</p>
-                        <p class="mt-4 text-zinc-500"><span class="text-[#3fb950]">luiz</span><span class="text-zinc-600">@</span><span class="text-[#58a6ff]">portfolio</span><span class="text-zinc-600">:</span><span class="text-[#58a6ff]">~</span><span class="text-zinc-400">$</span> <span class="cursor-blink text-zinc-300">&#9612;</span></p>
-                    </div>
-                </div>
-            `;
-        }
-
-        function renderEducationSection() {
-            const edu = document.getElementById('education');
-            const isPT = currentLang === 'PT';
-            edu.innerHTML = `
-                <h3 class="text-base font-semibold mb-4 border-b border-[#30363d] pb-2">${isPT ? 'Conquistas Acadêmicas' : 'Academic Achievements'}</h3>
-                <div class="bg-[#161b22] border border-[#30363d] rounded-xl p-5 max-w-2xl cursor-pointer hover:border-blue-500 transition-colors" onclick="flipToHarvard()">
-                    <ul class="space-y-6">
-                        <li>
-                            <p class="text-sm font-semibold text-white">Colégio Interativo</p>
-                            <p class="text-xs text-zinc-500">2024 — 2026</p>
-                        </li>
-                        <li class="border-t border-[#30363d] pt-4">
-                            <div class="flex justify-between items-start">
-                                <p class="text-sm font-semibold text-white">Harvard University</p>
-                                <span class="text-[10px] bg-blue-500/10 text-blue-400 px-2 py-0.5 rounded-full border border-blue-500/20">${isPT ? 'Aceito' : 'Accepted'}</span>
-                            </div>
-                            <p class="text-xs text-zinc-500">Summer Program Acceptance</p>
-                            <p class="text-[10px] text-blue-400 mt-2 flex items-center gap-1 font-medium">${isPT ? 'Clique para ver a carta' : 'Click to see letter'} <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 2a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 8 2ZM9.28 9.22a.75.75 0 0 1 0 1.06l-3 3a.75.75 0 1 1-1.06-1.06l3-3a.75.75 0 0 1 1.06 0Z"></path></svg></p>
-                        </li>
-                    </ul>
-                </div>
-            `;
-        }
-
-        window.onload = () => {
-            updateUI();
-        };
-
-        window.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') flipBack();
-        });
-    </script>
+const c=document.getElementById('sky'),x=c.getContext('2d');
+const still=matchMedia('(prefers-reduced-motion: reduce)').matches;
+let W,H,S=[],raf;
+function size(){
+  W=c.width=innerWidth;H=c.height=innerHeight;
+  S=Array.from({length:Math.min(170,(W*H/9000)|0)},()=>({x:Math.random()*W,y:Math.random()*H,r:Math.random()*1.2+.25,p:Math.random()*6.3,h:Math.random()<.12}));
+  cancelAnimationFrame(raf);draw(0);
+}
+function draw(t){
+  x.clearRect(0,0,W,H);
+  for(const s of S){
+    x.globalAlpha=.3+.35*Math.sin(t/1400+s.p);
+    x.fillStyle=s.h?'#ffc857':'#cfe3ff';
+    x.beginPath();x.arc(s.x,s.y,s.r,0,6.3);x.fill();
+  }
+  if(!still&&!document.hidden)raf=requestAnimationFrame(draw);
+}
+addEventListener('resize',size);
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&!still){cancelAnimationFrame(raf);raf=requestAnimationFrame(draw)}});
+size();
+</script>
 </body>
 </html>
